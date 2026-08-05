@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rad Fantasy — Fantasy football, straight numbers.</title>
+<title>Rad Fantasy — Internal Tool</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {
     --gray: #D9D9D9;
@@ -29,198 +30,129 @@
   }
 
   a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
 
-  .wrap {
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 20px; }
 
-  header {
-    border-bottom: 1px solid var(--gray);
-    padding: 18px 0;
-  }
-  header .wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .logo {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    letter-spacing: 0.5px;
-  }
-  nav {
-    display: none;
-    gap: 24px;
-    font-size: 14px;
-    color: var(--ink-soft);
-  }
-  nav a:hover { color: var(--deep); }
+  header { border-bottom: 1px solid var(--gray); padding: 18px 0; }
+  header .wrap { display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.5px; }
+  .logo .tag { font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; font-weight: 500; color: var(--ink-soft); margin-left: 8px; }
 
-  .hero {
-    padding: 56px 0 40px;
-  }
-  .eyebrow {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--deep);
-    margin-bottom: 10px;
-  }
-  h1 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 40px;
-    line-height: 1.1;
-    max-width: 560px;
-  }
-  .hero p {
-    margin-top: 16px;
-    max-width: 460px;
-    font-size: 15px;
-    color: var(--ink-soft);
-  }
-  .cta-row {
-    margin-top: 26px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .btn {
-    display: inline-block;
-    padding: 10px 18px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-  }
-  .btn-primary { background: var(--deep); color: var(--bg); }
-  .btn-secondary {
-    background: transparent;
-    color: var(--ink);
-    border: 1px solid var(--gray);
-  }
+  .hero { padding: 32px 0 24px; }
+  .eyebrow { font-size: 12px; font-weight: 500; color: var(--deep); margin-bottom: 8px; }
+  h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.1; max-width: 640px; }
+  .hero p { margin-top: 10px; max-width: 560px; font-size: 14px; color: var(--ink-soft); }
 
-  .route-divider {
-    width: 100%;
-    height: 14px;
-    margin: 36px 0;
-  }
+  .route-divider { width: 100%; height: 14px; margin: 20px 0; }
   .route-divider svg { display: block; width: 100%; }
 
-  .section-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--ink-soft);
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-bottom: 18px;
+  .group-tabs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .group-tabs button {
+    font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px;
+    border: 1px solid var(--gray); background: white; color: var(--ink);
   }
-  .cards {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-  .card {
-    background: #EFEFEE;
-    border-radius: 8px;
-    padding: 20px;
-  }
-  .card .tag {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 500;
-    padding: 3px 9px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-  }
-  .tag-live { background: rgba(74,138,90,0.15); color: var(--win); }
-  .tag-soon { background: rgba(90,96,104,0.15); color: var(--ink-soft); }
-  .card h3 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 20px;
-    margin-bottom: 6px;
-  }
-  .card p {
-    font-size: 13.5px;
-    color: var(--ink-soft);
-  }
+  .group-tabs button.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
-  .badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-right: 6px;
+  .sub-tabs { display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap; }
+  .sub-tabs button {
+    font-size: 13px; font-weight: 500; padding: 7px 14px; border-radius: 20px;
+    border: 1px solid var(--gray); background: white; color: var(--ink-soft);
   }
-  .badge-qb { background: rgba(28,43,54,0.12); color: var(--ink); }
-  .badge-rb { background: rgba(61,108,148,0.16); color: var(--deep); }
-  .badge-wr { background: rgba(128,190,228,0.28); color: #2C5878; }
-  .badge-te { background: rgba(90,96,104,0.16); color: var(--ink-soft); }
+  .sub-tabs button.active { background: var(--deep); color: var(--bg); border-color: var(--deep); }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  .loading { font-size: 13px; color: var(--ink-soft); padding: 20px 0; }
+
+  .rank-card {
+    background: white; border: 1px solid var(--gray); border-radius: 12px;
+    padding: 28px 30px; margin-bottom: 24px; max-width: 720px;
+  }
+  .rank-card .card-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 26px; margin-bottom: 4px; }
+  .rank-card .card-sub { font-size: 13px; color: var(--ink-soft); margin-bottom: 4px; }
+  .rank-card .section-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    margin: 16px 0 8px 0;
+  }
+  .rank-card .section-label.best { color: var(--deep); }
+  .rank-card .section-label.hard { color: var(--ink-soft); }
+  .rank-row { display: flex; align-items: center; padding: 6px 0; }
+  .rank-row .rank-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 22px; width: 54px; flex-shrink: 0; }
+  .rank-row .rank-num.best { color: var(--deep); }
+  .rank-row .rank-num.hard { color: var(--ink-soft); }
+  .rank-row .rank-badge {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px;
+    width: 46px; height: 26px; border-radius: 6px; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0; margin-right: 12px;
+  }
+  .rank-row .rank-badge.best { background: var(--deep); color: var(--bg); }
+  .rank-row .rank-badge.hard { background: var(--gray); color: var(--ink); }
+  .rank-row .rank-name { font-size: 14px; font-weight: 500; flex-grow: 1; }
+  .rank-row .rank-metric { font-size: 13px; color: var(--ink-soft); text-align: right; white-space: nowrap; }
+  .rank-card .footnote { font-size: 11px; color: var(--ink-soft); margin-top: 16px; line-height: 1.4; }
+
+  .toggle-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .toggle-row button {
+    font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 6px;
+    border: 1px solid var(--gray); background: white; color: var(--ink-soft);
+  }
+  .toggle-row button.active { border-color: var(--deep); color: var(--deep); }
+
+  .filter-row { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+  .filter-row select, .filter-row input {
+    font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; padding: 7px 10px;
+    border-radius: 6px; border: 1px solid var(--gray); background: white; color: var(--ink);
+  }
+  .filter-row label { font-size: 12px; color: var(--ink-soft); margin-right: -4px; }
+
+  table { border-collapse: collapse; width: 100%; max-width: 760px; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--gray); }
+  th { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-soft); cursor: pointer; user-select: none; }
+  th:hover { color: var(--deep); }
+  th.sorted { color: var(--deep); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .table-wrap { max-height: 560px; overflow-y: auto; max-width: 760px; }
+
+  .match-note { font-size: 12px; color: var(--ink-soft); margin: 8px 0 16px 0; max-width: 640px; }
+
+  .schedule-row { display: flex; align-items: center; padding: 6px 0; max-width: 500px; border-bottom: 1px solid var(--gray); }
+  .schedule-row .sched-week { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; width: 56px; flex-shrink: 0; color: var(--ink-soft); }
+  .schedule-row .sched-badge {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px;
+    width: 42px; height: 24px; border-radius: 5px; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0; margin-right: 10px;
+  }
+  .schedule-row .sched-opp { font-size: 13px; flex-grow: 1; }
+  .schedule-row .sched-loc { font-size: 11px; color: var(--ink-soft); }
+  .schedule-row.bye .sched-opp { color: var(--ink-soft); font-style: italic; }
+
+  .chart-box { max-width: 760px; height: 440px; margin-bottom: 8px; }
 
   .methodology {
-    background: #EFEFEE;
-    border-radius: 8px;
-    padding: 20px;
-    font-size: 13px;
-    color: var(--ink-soft);
+    background: #EFEFEE; border-radius: 8px; padding: 20px; font-size: 13px; color: var(--ink-soft);
+    margin-top: 20px; max-width: 900px;
   }
   .methodology strong { color: var(--ink); }
 
-  footer {
-    margin-top: 50px;
-    padding: 24px 0 40px;
-    border-top: 1px solid var(--gray);
-    font-size: 12px;
-    color: var(--ink-soft);
-  }
-
-  @media (min-width: 720px) {
-    nav { display: flex; }
-    h1 { font-size: 52px; }
-    .cards { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  @media (min-width: 980px) {
-    .cards { grid-template-columns: repeat(4, 1fr); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; }
-  }
-
-  a:focus-visible, button:focus-visible {
-    outline: 2px solid var(--deep);
-    outline-offset: 2px;
-  }
+  footer { margin-top: 50px; padding: 24px 0 40px; border-top: 1px solid var(--gray); font-size: 12px; color: var(--ink-soft); }
 </style>
 </head>
 <body>
 
 <header>
   <div class="wrap">
-    <span class="logo">RAD FANTASY</span>
-    <nav>
-      <a href="#stats">Player Stats</a>
-      <a href="#teams">Team Stats</a>
-      <a href="#adp">ADP &amp; Draft Trends</a>
-      <a href="#analysis">Analysis</a>
-    </nav>
+    <span class="logo">RAD FANTASY<span class="tag">Internal Tool</span></span>
   </div>
 </header>
 
 <main>
   <div class="wrap">
     <section class="hero">
-      <div class="eyebrow">Est. 2026</div>
-      <h1>Fantasy football, straight numbers.</h1>
-      <p>Draft capital, real outcomes, and everything in between, checked against the data before it makes the page. No spin, no hot takes, just what actually happened.</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#stats">See player stats</a>
-        <a class="btn btn-secondary" href="#adp">Browse draft trends</a>
-      </div>
+      <div class="eyebrow">Content workspace</div>
+      <h1>Analysis, visuals, and the numbers behind them.</h1>
+      <p>Everything here is checked against known facts before it's used. Pick a view, work the data, screenshot what you need.</p>
     </section>
 
     <div class="route-divider" aria-hidden="true">
@@ -229,47 +161,115 @@
       </svg>
     </div>
 
-    <section id="stats">
-      <div class="section-label">What&#39;s here</div>
-      <div class="cards">
-        <div class="card">
-          <span class="tag tag-live">Live</span>
-          <h3>Player stats</h3>
-          <p>Weekly and season totals for every skill player back to 1999, passing, rushing, and receiving, broken out by category.</p>
-          <div style="margin-top:12px">
-            <span class="badge badge-qb">QB</span>
-            <span class="badge badge-rb">RB</span>
-            <span class="badge badge-wr">WR</span>
-            <span class="badge badge-te">TE</span>
-          </div>
-        </div>
-        <div class="card" id="teams">
-          <span class="tag tag-live">Live</span>
-          <h3>Team stats</h3>
-          <p>Wins, losses, and scoring by team and season, the box score view behind every matchup.</p>
-        </div>
-        <div class="card" id="adp">
-          <span class="tag tag-live">Live</span>
-          <h3>ADP &amp; draft trends</h3>
-          <p>Historical average draft position back to 2011, plus current per-site draft data from ESPN, Yahoo, Sleeper, and Underdog.</p>
-        </div>
-        <div class="card" id="analysis">
-          <span class="tag tag-soon">Coming soon</span>
-          <h3>Analysis</h3>
-          <p>Draft capital versus real outcomes, round-by-round ROI, and position trends, reported plainly, including when a result is weak or null.</p>
-        </div>
-      </div>
-    </section>
+    <div class="group-tabs" id="groupTabs">
+      <button data-group="rankings" class="active">Rankings</button>
+      <button data-group="trends">Stats &amp; Trends</button>
+    </div>
 
-    <div class="route-divider" aria-hidden="true">
-      <svg viewBox="0 0 1040 14" preserveAspectRatio="none">
-        <line x1="0" y1="7" x2="1040" y2="7" stroke="#1C2B36" stroke-width="1" stroke-dasharray="3,4" opacity="0.3"/>
-      </svg>
+    <div id="group-rankings" class="tab-group">
+      <div class="sub-tabs" id="rankingsSubTabs">
+        <button data-view="sos" class="active">Strength of Schedule</button>
+        <button data-view="ol">Offensive Line</button>
+        <button data-view="dst">D/ST</button>
+      </div>
+
+      <div id="view-sos" class="view active">
+        <div class="toggle-row" id="sosPositionToggle"></div>
+        <div class="toggle-row" id="sosWindowToggle">
+          <button data-window="full_season" class="active">Full season</button>
+          <button data-window="playoff_weeks">Playoff weeks (15-17)</button>
+        </div>
+        <div class="rank-card" id="sosCard"></div>
+        <div class="table-wrap" id="sosTable"></div>
+
+        <div class="route-divider" aria-hidden="true">
+          <svg viewBox="0 0 1040 14" preserveAspectRatio="none">
+            <line x1="0" y1="7" x2="1040" y2="7" stroke="#1C2B36" stroke-width="1" stroke-dasharray="3,4" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="section-label">Team schedule — 2026</div>
+        <div class="filter-row">
+          <label>Team</label>
+          <select id="scheduleTeamSelect"></select>
+        </div>
+        <div class="toggle-row" id="scheduleWindowToggle">
+          <button data-window="full_season" class="active">Full season (weeks 1-17)</button>
+          <button data-window="playoff_weeks">Playoff weeks (15-17)</button>
+        </div>
+        <div id="scheduleDisplay"></div>
+      </div>
+
+      <div id="view-ol" class="view">
+        <div class="toggle-row" id="olYearToggle">
+          <button data-year="2026" class="active">2026 Projected</button>
+          <button data-year="2025">2025 Actual</button>
+        </div>
+        <div class="rank-card" id="olCard"></div>
+        <div class="table-wrap" id="olTable"></div>
+      </div>
+
+      <div id="view-dst" class="view">
+        <div class="filter-row">
+          <label>Season</label>
+          <select id="dstSeasonSelect"></select>
+        </div>
+        <div class="rank-card" id="dstCard"></div>
+        <div class="table-wrap" id="dstTable"></div>
+      </div>
+    </div>
+
+    <div id="group-trends" class="tab-group" style="display:none">
+      <div class="sub-tabs" id="trendsSubTabs">
+        <button data-view="leaderboard" class="active">Player Stats</button>
+        <button data-view="scatter">ADP vs. Points</button>
+      </div>
+
+      <div id="view-leaderboard" class="view active">
+        <div class="filter-row">
+          <label>Season</label>
+          <select id="lbSeasonSelect"></select>
+          <label>Position</label>
+          <select id="lbPositionSelect">
+            <option value="ALL">All</option>
+            <option value="QB">QB</option>
+            <option value="RB">RB</option>
+            <option value="WR">WR</option>
+            <option value="TE">TE</option>
+            <option value="K">K</option>
+          </select>
+          <label>Scoring</label>
+          <select id="lbScoringSelect">
+            <option value="ppr">PPR</option>
+            <option value="half_ppr">Half-PPR</option>
+            <option value="standard">Standard</option>
+          </select>
+          <input type="text" id="lbSearch" placeholder="Search player...">
+        </div>
+        <div class="table-wrap" id="lbTable"></div>
+      </div>
+
+      <div id="view-scatter" class="view">
+        <div class="filter-row">
+          <label>Season</label>
+          <select id="scatterSeasonSelect"></select>
+          <label>Position</label>
+          <select id="scatterPositionSelect">
+            <option value="ALL">All</option>
+            <option value="QB">QB</option>
+            <option value="RB">RB</option>
+            <option value="WR">WR</option>
+            <option value="TE">TE</option>
+          </select>
+        </div>
+        <div class="chart-box"><canvas id="scatterChart"></canvas></div>
+        <div class="loading" id="scatterFallbackMsg" style="display:none"></div>
+        <div class="match-note" id="scatterMatchNote"></div>
+      </div>
     </div>
 
     <section>
       <div class="methodology">
-        <strong>Where the numbers come from.</strong> Player and team stats are sourced from nflverse&#39;s public play-by-play data. Historical draft position comes from MyFantasyLeague, aggregated across real, non-mock, non-keeper drafts. Current-season draft data is pulled from Flock Fantasy, drawing on ESPN, Yahoo, Sleeper, Underdog, CBS, and FFPC. Every dataset on this site is checked against known, independently verifiable numbers before it&#39;s published, and every chart notes when a sample size is too small to lean on.
+        <strong>Where the numbers come from.</strong> Player and team stats are sourced from nflverse's public play-by-play data. Historical draft position comes from FantasyPros, aggregated across real, non-mock, non-keeper drafts. Current-season draft data is pulled from Flock Fantasy, drawing on ESPN, Yahoo, Sleeper, Underdog, CBS, and FFPC. Strength-of-schedule and offensive-line data blend multiple public sources; see each view for its specific methodology. Every dataset here is checked against known, independently verifiable numbers before it's used, and gaps (like a player name not matching cleanly across sources) are shown as a count rather than hidden.
       </div>
     </section>
   </div>
@@ -277,9 +277,10 @@
 
 <footer>
   <div class="wrap">
-    &copy; 2026 Rad Fantasy. Not affiliated with the NFL, ESPN, Yahoo, Sleeper, Underdog, or MyFantasyLeague.
+    &copy; 2026 Rad Fantasy. Internal tool, not for public distribution. Not affiliated with the NFL, ESPN, Yahoo, Sleeper, Underdog, FantasyPros, or PFF.
   </div>
 </footer>
 
+<script src="app.js"></script>
 </body>
 </html>
