@@ -1,0 +1,2754 @@
+[
+  {
+    "team": "ARI",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.89,
+        "rank": 18
+      },
+      "playoff_weeks": {
+        "value": 17.74,
+        "rank": 19
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.7,
+        "rank": 24
+      },
+      "playoff_weeks": {
+        "value": 23.88,
+        "rank": 2
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 30.8,
+        "rank": 14
+      },
+      "playoff_weeks": {
+        "value": 30.54,
+        "rank": 17
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 12.93,
+        "rank": 26
+      },
+      "playoff_weeks": {
+        "value": 12.59,
+        "rank": 22
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.46,
+        "rank": 19
+      },
+      "playoff_weeks": {
+        "value": 10.12,
+        "rank": 1
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 24,
+        "avg_opponent_points_scored": {
+          "value": 23.95,
+          "rank": 30
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.17,
+          "rank": 10
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.24,
+          "rank": 25
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 1,
+        "avg_opponent_points_scored": {
+          "value": 16.61,
+          "rank": 1
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.37,
+          "rank": 1
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 3.39,
+          "rank": 1
+        }
+      }
+    }
+  },
+  {
+    "team": "ATL",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.97,
+        "rank": 16
+      },
+      "playoff_weeks": {
+        "value": 19.15,
+        "rank": 8
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.14,
+        "rank": 11
+      },
+      "playoff_weeks": {
+        "value": 22.75,
+        "rank": 9
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 30.31,
+        "rank": 20
+      },
+      "playoff_weeks": {
+        "value": 31.38,
+        "rank": 11
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.87,
+        "rank": 4
+      },
+      "playoff_weeks": {
+        "value": 14.72,
+        "rank": 6
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.58,
+        "rank": 10
+      },
+      "playoff_weeks": {
+        "value": 9.08,
+        "rank": 11
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 5,
+        "avg_opponent_points_scored": {
+          "value": 21.87,
+          "rank": 3
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.18,
+          "rank": 6
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.32,
+          "rank": 20
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 5,
+        "avg_opponent_points_scored": {
+          "value": 20.43,
+          "rank": 5
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.21,
+          "rank": 11
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.43,
+          "rank": 14
+        }
+      }
+    }
+  },
+  {
+    "team": "BAL",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.26,
+        "rank": 13
+      },
+      "playoff_weeks": {
+        "value": 18.72,
+        "rank": 12
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.04,
+        "rank": 14
+      },
+      "playoff_weeks": {
+        "value": 23.21,
+        "rank": 6
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 30.39,
+        "rank": 17
+      },
+      "playoff_weeks": {
+        "value": 29.14,
+        "rank": 25
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 14.04,
+        "rank": 2
+      },
+      "playoff_weeks": {
+        "value": 16.53,
+        "rank": 2
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.45,
+        "rank": 20
+      },
+      "playoff_weeks": {
+        "value": 8.31,
+        "rank": 17
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 8,
+        "avg_opponent_points_scored": {
+          "value": 22.42,
+          "rank": 7
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.19,
+          "rank": 3
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.32,
+          "rank": 21
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 9,
+        "avg_opponent_points_scored": {
+          "value": 21.37,
+          "rank": 8
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.25,
+          "rank": 9
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.31,
+          "rank": 19
+        }
+      }
+    }
+  },
+  {
+    "team": "BUF",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.49,
+        "rank": 25
+      },
+      "playoff_weeks": {
+        "value": 18.83,
+        "rank": 10
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.51,
+        "rank": 28
+      },
+      "playoff_weeks": {
+        "value": 20.99,
+        "rank": 25
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 30.22,
+        "rank": 22
+      },
+      "playoff_weeks": {
+        "value": 30.81,
+        "rank": 16
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.13,
+        "rank": 18
+      },
+      "playoff_weeks": {
+        "value": 14.31,
+        "rank": 7
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.36,
+        "rank": 28
+      },
+      "playoff_weeks": {
+        "value": 8.1,
+        "rank": 23
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 17,
+        "avg_opponent_points_scored": {
+          "value": 23.01,
+          "rank": 16
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.12,
+          "rank": 27
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.55,
+          "rank": 3
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 26,
+        "avg_opponent_points_scored": {
+          "value": 23.31,
+          "rank": 16
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.0,
+          "rank": 27
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 1.67,
+          "rank": 31
+        }
+      }
+    }
+  },
+  {
+    "team": "CAR",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.91,
+        "rank": 17
+      },
+      "playoff_weeks": {
+        "value": 19.27,
+        "rank": 6
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.24,
+        "rank": 31
+      },
+      "playoff_weeks": {
+        "value": 22.08,
+        "rank": 14
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 30.28,
+        "rank": 21
+      },
+      "playoff_weeks": {
+        "value": 28.92,
+        "rank": 26
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.15,
+        "rank": 17
+      },
+      "playoff_weeks": {
+        "value": 17.38,
+        "rank": 1
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.71,
+        "rank": 7
+      },
+      "playoff_weeks": {
+        "value": 7.9,
+        "rank": 25
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 22,
+        "avg_opponent_points_scored": {
+          "value": 22.53,
+          "rank": 10
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.13,
+          "rank": 24
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.17,
+          "rank": 30
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 22,
+        "avg_opponent_points_scored": {
+          "value": 25.37,
+          "rank": 27
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.27,
+          "rank": 7
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 1.84,
+          "rank": 28
+        }
+      }
+    }
+  },
+  {
+    "team": "CHI",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.05,
+        "rank": 30
+      },
+      "playoff_weeks": {
+        "value": 16.97,
+        "rank": 24
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.43,
+        "rank": 29
+      },
+      "playoff_weeks": {
+        "value": 21.59,
+        "rank": 19
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 29.45,
+        "rank": 31
+      },
+      "playoff_weeks": {
+        "value": 31.15,
+        "rank": 12
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 12.77,
+        "rank": 31
+      },
+      "playoff_weeks": {
+        "value": 11.28,
+        "rank": 29
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.39,
+        "rank": 27
+      },
+      "playoff_weeks": {
+        "value": 8.16,
+        "rank": 21
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 16,
+        "avg_opponent_points_scored": {
+          "value": 23.31,
+          "rank": 19
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.17,
+          "rank": 11
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.4,
+          "rank": 12
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 32,
+        "avg_opponent_points_scored": {
+          "value": 26.53,
+          "rank": 31
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 0.92,
+          "rank": 31
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.12,
+          "rank": 23
+        }
+      }
+    }
+  },
+  {
+    "team": "CIN",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.28,
+        "rank": 12
+      },
+      "playoff_weeks": {
+        "value": 17.98,
+        "rank": 18
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.56,
+        "rank": 27
+      },
+      "playoff_weeks": {
+        "value": 22.4,
+        "rank": 11
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 31.54,
+        "rank": 9
+      },
+      "playoff_weeks": {
+        "value": 32.8,
+        "rank": 6
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.59,
+        "rank": 8
+      },
+      "playoff_weeks": {
+        "value": 13.29,
+        "rank": 18
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.62,
+        "rank": 9
+      },
+      "playoff_weeks": {
+        "value": 9.59,
+        "rank": 5
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 3,
+        "avg_opponent_points_scored": {
+          "value": 21.6,
+          "rank": 2
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.18,
+          "rank": 7
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.36,
+          "rank": 16
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 15,
+        "avg_opponent_points_scored": {
+          "value": 23.55,
+          "rank": 19
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.31,
+          "rank": 3
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.14,
+          "rank": 22
+        }
+      }
+    }
+  },
+  {
+    "team": "CLE",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.99,
+        "rank": 2
+      },
+      "playoff_weeks": {
+        "value": 19.27,
+        "rank": 7
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.73,
+        "rank": 1
+      },
+      "playoff_weeks": {
+        "value": 22.92,
+        "rank": 7
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 31.67,
+        "rank": 7
+      },
+      "playoff_weeks": {
+        "value": 35.17,
+        "rank": 1
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 14.24,
+        "rank": 1
+      },
+      "playoff_weeks": {
+        "value": 12.5,
+        "rank": 23
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.89,
+        "rank": 2
+      },
+      "playoff_weeks": {
+        "value": 9.86,
+        "rank": 3
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 2,
+        "avg_opponent_points_scored": {
+          "value": 22.04,
+          "rank": 5
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.18,
+          "rank": 8
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.43,
+          "rank": 10
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 20,
+        "avg_opponent_points_scored": {
+          "value": 24.92,
+          "rank": 26
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.19,
+          "rank": 14
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.39,
+          "rank": 17
+        }
+      }
+    }
+  },
+  {
+    "team": "DAL",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.39,
+        "rank": 9
+      },
+      "playoff_weeks": {
+        "value": 18.54,
+        "rank": 13
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.5,
+        "rank": 5
+      },
+      "playoff_weeks": {
+        "value": 21.39,
+        "rank": 22
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 31.64,
+        "rank": 8
+      },
+      "playoff_weeks": {
+        "value": 32.21,
+        "rank": 9
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.3,
+        "rank": 15
+      },
+      "playoff_weeks": {
+        "value": 13.09,
+        "rank": 19
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.45,
+        "rank": 21
+      },
+      "playoff_weeks": {
+        "value": 7.78,
+        "rank": 26
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 30,
+        "avg_opponent_points_scored": {
+          "value": 23.7,
+          "rank": 25
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.1,
+          "rank": 29
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.23,
+          "rank": 26
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 30,
+        "avg_opponent_points_scored": {
+          "value": 26.92,
+          "rank": 32
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 0.98,
+          "rank": 28
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.19,
+          "rank": 21
+        }
+      }
+    }
+  },
+  {
+    "team": "DEN",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.27,
+        "rank": 28
+      },
+      "playoff_weeks": {
+        "value": 16.12,
+        "rank": 29
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.6,
+        "rank": 26
+      },
+      "playoff_weeks": {
+        "value": 21.88,
+        "rank": 17
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 29.76,
+        "rank": 28
+      },
+      "playoff_weeks": {
+        "value": 29.76,
+        "rank": 20
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.05,
+        "rank": 22
+      },
+      "playoff_weeks": {
+        "value": 10.92,
+        "rank": 30
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.27,
+        "rank": 31
+      },
+      "playoff_weeks": {
+        "value": 7.75,
+        "rank": 27
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 1,
+        "avg_opponent_points_scored": {
+          "value": 22.61,
+          "rank": 11
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.18,
+          "rank": 9
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.67,
+          "rank": 1
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 12,
+        "avg_opponent_points_scored": {
+          "value": 23.76,
+          "rank": 21
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.12,
+          "rank": 18
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.98,
+          "rank": 3
+        }
+      }
+    }
+  },
+  {
+    "team": "DET",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.61,
+        "rank": 23
+      },
+      "playoff_weeks": {
+        "value": 17.72,
+        "rank": 20
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.45,
+        "rank": 6
+      },
+      "playoff_weeks": {
+        "value": 22.15,
+        "rank": 13
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 30.35,
+        "rank": 19
+      },
+      "playoff_weeks": {
+        "value": 30.98,
+        "rank": 14
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 12.97,
+        "rank": 25
+      },
+      "playoff_weeks": {
+        "value": 11.69,
+        "rank": 28
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.78,
+        "rank": 5
+      },
+      "playoff_weeks": {
+        "value": 8.74,
+        "rank": 14
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 6,
+        "avg_opponent_points_scored": {
+          "value": 21.94,
+          "rank": 4
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.15,
+          "rank": 19
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.5,
+          "rank": 6
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 13,
+        "avg_opponent_points_scored": {
+          "value": 22.86,
+          "rank": 13
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.12,
+          "rank": 19
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.59,
+          "rank": 10
+        }
+      }
+    }
+  },
+  {
+    "team": "GB",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.98,
+        "rank": 15
+      },
+      "playoff_weeks": {
+        "value": 18.76,
+        "rank": 11
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.72,
+        "rank": 22
+      },
+      "playoff_weeks": {
+        "value": 22.0,
+        "rank": 16
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 30.72,
+        "rank": 16
+      },
+      "playoff_weeks": {
+        "value": 30.48,
+        "rank": 18
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 12.88,
+        "rank": 29
+      },
+      "playoff_weeks": {
+        "value": 13.85,
+        "rank": 14
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.4,
+        "rank": 25
+      },
+      "playoff_weeks": {
+        "value": 6.88,
+        "rank": 31
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 29,
+        "avg_opponent_points_scored": {
+          "value": 23.85,
+          "rank": 28
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.12,
+          "rank": 28
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.3,
+          "rank": 23
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 29,
+        "avg_opponent_points_scored": {
+          "value": 23.37,
+          "rank": 18
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 0.96,
+          "rank": 30
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 1.82,
+          "rank": 29
+        }
+      }
+    }
+  },
+  {
+    "team": "HOU",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.63,
+        "rank": 5
+      },
+      "playoff_weeks": {
+        "value": 17.02,
+        "rank": 23
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.05,
+        "rank": 13
+      },
+      "playoff_weeks": {
+        "value": 20.85,
+        "rank": 26
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 32.27,
+        "rank": 2
+      },
+      "playoff_weeks": {
+        "value": 29.66,
+        "rank": 21
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.38,
+        "rank": 13
+      },
+      "playoff_weeks": {
+        "value": 11.74,
+        "rank": 26
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.73,
+        "rank": 6
+      },
+      "playoff_weeks": {
+        "value": 7.57,
+        "rank": 28
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 20,
+        "avg_opponent_points_scored": {
+          "value": 23.49,
+          "rank": 22
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.16,
+          "rank": 16
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.4,
+          "rank": 13
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 31,
+        "avg_opponent_points_scored": {
+          "value": 24.39,
+          "rank": 25
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 0.9,
+          "rank": 32
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.06,
+          "rank": 24
+        }
+      }
+    }
+  },
+  {
+    "team": "IND",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.38,
+        "rank": 10
+      },
+      "playoff_weeks": {
+        "value": 18.38,
+        "rank": 15
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.03,
+        "rank": 15
+      },
+      "playoff_weeks": {
+        "value": 23.85,
+        "rank": 3
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 30.83,
+        "rank": 13
+      },
+      "playoff_weeks": {
+        "value": 29.25,
+        "rank": 24
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.45,
+        "rank": 10
+      },
+      "playoff_weeks": {
+        "value": 15.71,
+        "rank": 3
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.19,
+        "rank": 32
+      },
+      "playoff_weeks": {
+        "value": 8.63,
+        "rank": 15
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 13,
+        "avg_opponent_points_scored": {
+          "value": 22.42,
+          "rank": 8
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.15,
+          "rank": 20
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.47,
+          "rank": 8
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 2,
+        "avg_opponent_points_scored": {
+          "value": 19.16,
+          "rank": 2
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.37,
+          "rank": 2
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.8,
+          "rank": 4
+        }
+      }
+    }
+  },
+  {
+    "team": "JAX",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.67,
+        "rank": 4
+      },
+      "playoff_weeks": {
+        "value": 20.05,
+        "rank": 3
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.83,
+        "rank": 19
+      },
+      "playoff_weeks": {
+        "value": 23.44,
+        "rank": 4
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 32.05,
+        "rank": 3
+      },
+      "playoff_weeks": {
+        "value": 33.42,
+        "rank": 5
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.72,
+        "rank": 5
+      },
+      "playoff_weeks": {
+        "value": 13.5,
+        "rank": 15
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.57,
+        "rank": 12
+      },
+      "playoff_weeks": {
+        "value": 8.06,
+        "rank": 24
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 28,
+        "avg_opponent_points_scored": {
+          "value": 23.33,
+          "rank": 20
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.09,
+          "rank": 31
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.22,
+          "rank": 27
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 25,
+        "avg_opponent_points_scored": {
+          "value": 24.14,
+          "rank": 22
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.11,
+          "rank": 23
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 1.94,
+          "rank": 25
+        }
+      }
+    }
+  },
+  {
+    "team": "KC",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.32,
+        "rank": 27
+      },
+      "playoff_weeks": {
+        "value": 16.29,
+        "rank": 28
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.8,
+        "rank": 20
+      },
+      "playoff_weeks": {
+        "value": 20.29,
+        "rank": 30
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 29.84,
+        "rank": 25
+      },
+      "playoff_weeks": {
+        "value": 29.59,
+        "rank": 22
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.43,
+        "rank": 11
+      },
+      "playoff_weeks": {
+        "value": 13.32,
+        "rank": 16
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.63,
+        "rank": 8
+      },
+      "playoff_weeks": {
+        "value": 7.14,
+        "rank": 30
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 4,
+        "avg_opponent_points_scored": {
+          "value": 23.06,
+          "rank": 17
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.21,
+          "rank": 1
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.45,
+          "rank": 9
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 18,
+        "avg_opponent_points_scored": {
+          "value": 25.39,
+          "rank": 28
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.18,
+          "rank": 16
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.65,
+          "rank": 9
+        }
+      }
+    }
+  },
+  {
+    "team": "LA",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.82,
+        "rank": 19
+      },
+      "playoff_weeks": {
+        "value": 20.61,
+        "rank": 1
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.38,
+        "rank": 7
+      },
+      "playoff_weeks": {
+        "value": 21.81,
+        "rank": 18
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 30.36,
+        "rank": 18
+      },
+      "playoff_weeks": {
+        "value": 32.35,
+        "rank": 8
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.06,
+        "rank": 21
+      },
+      "playoff_weeks": {
+        "value": 14.28,
+        "rank": 9
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.47,
+        "rank": 17
+      },
+      "playoff_weeks": {
+        "value": 8.18,
+        "rank": 20
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 18,
+        "avg_opponent_points_scored": {
+          "value": 23.39,
+          "rank": 21
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.17,
+          "rank": 12
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.35,
+          "rank": 17
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 24,
+        "avg_opponent_points_scored": {
+          "value": 26.16,
+          "rank": 30
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.27,
+          "rank": 8
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 1.88,
+          "rank": 27
+        }
+      }
+    }
+  },
+  {
+    "team": "LAC",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.39,
+        "rank": 26
+      },
+      "playoff_weeks": {
+        "value": 18.03,
+        "rank": 16
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.61,
+        "rank": 25
+      },
+      "playoff_weeks": {
+        "value": 22.55,
+        "rank": 10
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 29.72,
+        "rank": 30
+      },
+      "playoff_weeks": {
+        "value": 29.79,
+        "rank": 19
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.07,
+        "rank": 20
+      },
+      "playoff_weeks": {
+        "value": 14.02,
+        "rank": 11
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.3,
+        "rank": 30
+      },
+      "playoff_weeks": {
+        "value": 7.51,
+        "rank": 29
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 19,
+        "avg_opponent_points_scored": {
+          "value": 22.93,
+          "rank": 14
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.13,
+          "rank": 25
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.43,
+          "rank": 11
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 14,
+        "avg_opponent_points_scored": {
+          "value": 22.47,
+          "rank": 12
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.23,
+          "rank": 10
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.2,
+          "rank": 20
+        }
+      }
+    }
+  },
+  {
+    "team": "LV",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 16.76,
+        "rank": 32
+      },
+      "playoff_weeks": {
+        "value": 18.03,
+        "rank": 17
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.02,
+        "rank": 32
+      },
+      "playoff_weeks": {
+        "value": 21.53,
+        "rank": 20
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 28.83,
+        "rank": 32
+      },
+      "playoff_weeks": {
+        "value": 30.93,
+        "rank": 15
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.1,
+        "rank": 19
+      },
+      "playoff_weeks": {
+        "value": 14.92,
+        "rank": 5
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.48,
+        "rank": 16
+      },
+      "playoff_weeks": {
+        "value": 9.98,
+        "rank": 2
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 7,
+        "avg_opponent_points_scored": {
+          "value": 22.64,
+          "rank": 12
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.17,
+          "rank": 13
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.55,
+          "rank": 4
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 6,
+        "avg_opponent_points_scored": {
+          "value": 20.39,
+          "rank": 4
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.12,
+          "rank": 20
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.7,
+          "rank": 6
+        }
+      }
+    }
+  },
+  {
+    "team": "MIA",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.22,
+        "rank": 29
+      },
+      "playoff_weeks": {
+        "value": 15.29,
+        "rank": 32
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.9,
+        "rank": 17
+      },
+      "playoff_weeks": {
+        "value": 21.3,
+        "rank": 24
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 29.84,
+        "rank": 26
+      },
+      "playoff_weeks": {
+        "value": 28.42,
+        "rank": 27
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.03,
+        "rank": 24
+      },
+      "playoff_weeks": {
+        "value": 10.2,
+        "rank": 31
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.42,
+        "rank": 23
+      },
+      "playoff_weeks": {
+        "value": 8.11,
+        "rank": 22
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 21,
+        "avg_opponent_points_scored": {
+          "value": 23.83,
+          "rank": 27
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.13,
+          "rank": 26
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.54,
+          "rank": 5
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 21,
+        "avg_opponent_points_scored": {
+          "value": 24.31,
+          "rank": 24
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.04,
+          "rank": 25
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.53,
+          "rank": 12
+        }
+      }
+    }
+  },
+  {
+    "team": "MIN",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.45,
+        "rank": 8
+      },
+      "playoff_weeks": {
+        "value": 20.1,
+        "rank": 2
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.17,
+        "rank": 10
+      },
+      "playoff_weeks": {
+        "value": 24.27,
+        "rank": 1
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 31.97,
+        "rank": 5
+      },
+      "playoff_weeks": {
+        "value": 33.62,
+        "rank": 4
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.53,
+        "rank": 9
+      },
+      "playoff_weeks": {
+        "value": 14.93,
+        "rank": 4
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.45,
+        "rank": 22
+      },
+      "playoff_weeks": {
+        "value": 9.51,
+        "rank": 7
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 32,
+        "avg_opponent_points_scored": {
+          "value": 23.71,
+          "rank": 26
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.08,
+          "rank": 32
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.11,
+          "rank": 32
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 8,
+        "avg_opponent_points_scored": {
+          "value": 22.29,
+          "rank": 11
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.19,
+          "rank": 15
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.67,
+          "rank": 7
+        }
+      }
+    }
+  },
+  {
+    "team": "NE",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.58,
+        "rank": 24
+      },
+      "playoff_weeks": {
+        "value": 17.31,
+        "rank": 21
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.71,
+        "rank": 23
+      },
+      "playoff_weeks": {
+        "value": 21.38,
+        "rank": 23
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 29.87,
+        "rank": 24
+      },
+      "playoff_weeks": {
+        "value": 28.24,
+        "rank": 29
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 12.92,
+        "rank": 27
+      },
+      "playoff_weeks": {
+        "value": 13.3,
+        "rank": 17
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.4,
+        "rank": 26
+      },
+      "playoff_weeks": {
+        "value": 9.31,
+        "rank": 9
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 15,
+        "avg_opponent_points_scored": {
+          "value": 22.97,
+          "rank": 15
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.16,
+          "rank": 17
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.49,
+          "rank": 7
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 10,
+        "avg_opponent_points_scored": {
+          "value": 20.84,
+          "rank": 6
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.06,
+          "rank": 24
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.55,
+          "rank": 11
+        }
+      }
+    }
+  },
+  {
+    "team": "NO",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.35,
+        "rank": 11
+      },
+      "playoff_weeks": {
+        "value": 19.42,
+        "rank": 5
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.63,
+        "rank": 3
+      },
+      "playoff_weeks": {
+        "value": 23.27,
+        "rank": 5
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 31.17,
+        "rank": 11
+      },
+      "playoff_weeks": {
+        "value": 31.75,
+        "rank": 10
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.4,
+        "rank": 12
+      },
+      "playoff_weeks": {
+        "value": 14.31,
+        "rank": 8
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.87,
+        "rank": 3
+      },
+      "playoff_weeks": {
+        "value": 9.53,
+        "rank": 6
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 10,
+        "avg_opponent_points_scored": {
+          "value": 21.58,
+          "rank": 1
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.16,
+          "rank": 18
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.37,
+          "rank": 15
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 16,
+        "avg_opponent_points_scored": {
+          "value": 21.33,
+          "rank": 7
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.12,
+          "rank": 21
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.41,
+          "rank": 16
+        }
+      }
+    }
+  },
+  {
+    "team": "NYG",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.56,
+        "rank": 6
+      },
+      "playoff_weeks": {
+        "value": 19.62,
+        "rank": 4
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.13,
+        "rank": 12
+      },
+      "playoff_weeks": {
+        "value": 22.04,
+        "rank": 15
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 31.82,
+        "rank": 6
+      },
+      "playoff_weeks": {
+        "value": 33.95,
+        "rank": 3
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.38,
+        "rank": 14
+      },
+      "playoff_weeks": {
+        "value": 12.71,
+        "rank": 21
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.54,
+        "rank": 14
+      },
+      "playoff_weeks": {
+        "value": 8.82,
+        "rank": 13
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 25,
+        "avg_opponent_points_scored": {
+          "value": 23.87,
+          "rank": 29
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.17,
+          "rank": 14
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.21,
+          "rank": 29
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 19,
+        "avg_opponent_points_scored": {
+          "value": 24.14,
+          "rank": 23
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.21,
+          "rank": 12
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.37,
+          "rank": 18
+        }
+      }
+    }
+  },
+  {
+    "team": "NYJ",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 16.95,
+        "rank": 31
+      },
+      "playoff_weeks": {
+        "value": 15.59,
+        "rank": 31
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.4,
+        "rank": 30
+      },
+      "playoff_weeks": {
+        "value": 21.52,
+        "rank": 21
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 29.73,
+        "rank": 29
+      },
+      "playoff_weeks": {
+        "value": 27.69,
+        "rank": 31
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 12.69,
+        "rank": 32
+      },
+      "playoff_weeks": {
+        "value": 14.09,
+        "rank": 10
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.31,
+        "rank": 29
+      },
+      "playoff_weeks": {
+        "value": 8.91,
+        "rank": 12
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 14,
+        "avg_opponent_points_scored": {
+          "value": 22.78,
+          "rank": 13
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.14,
+          "rank": 21
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.64,
+          "rank": 2
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 4,
+        "avg_opponent_points_scored": {
+          "value": 23.31,
+          "rank": 17
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.3,
+          "rank": 4
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 3.27,
+          "rank": 2
+        }
+      }
+    }
+  },
+  {
+    "team": "PHI",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 19.4,
+        "rank": 1
+      },
+      "playoff_weeks": {
+        "value": 16.6,
+        "rank": 25
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.64,
+        "rank": 2
+      },
+      "playoff_weeks": {
+        "value": 20.68,
+        "rank": 29
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 33.08,
+        "rank": 1
+      },
+      "playoff_weeks": {
+        "value": 28.16,
+        "rank": 30
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 14.03,
+        "rank": 3
+      },
+      "playoff_weeks": {
+        "value": 13.93,
+        "rank": 13
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.55,
+        "rank": 13
+      },
+      "playoff_weeks": {
+        "value": 6.18,
+        "rank": 32
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 31,
+        "avg_opponent_points_scored": {
+          "value": 24.17,
+          "rank": 31
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.14,
+          "rank": 22
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.13,
+          "rank": 31
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 27,
+        "avg_opponent_points_scored": {
+          "value": 25.96,
+          "rank": 29
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.21,
+          "rank": 13
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 1.67,
+          "rank": 32
+        }
+      }
+    }
+  },
+  {
+    "team": "PIT",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.71,
+        "rank": 21
+      },
+      "playoff_weeks": {
+        "value": 18.39,
+        "rank": 14
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.95,
+        "rank": 16
+      },
+      "playoff_weeks": {
+        "value": 22.89,
+        "rank": 8
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 29.82,
+        "rank": 27
+      },
+      "playoff_weeks": {
+        "value": 32.62,
+        "rank": 7
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.71,
+        "rank": 6
+      },
+      "playoff_weeks": {
+        "value": 12.93,
+        "rank": 20
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.42,
+        "rank": 24
+      },
+      "playoff_weeks": {
+        "value": 9.39,
+        "rank": 8
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 9,
+        "avg_opponent_points_scored": {
+          "value": 22.43,
+          "rank": 9
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.19,
+          "rank": 4
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.34,
+          "rank": 19
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 3,
+        "avg_opponent_points_scored": {
+          "value": 19.98,
+          "rank": 3
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.29,
+          "rank": 6
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.67,
+          "rank": 8
+        }
+      }
+    }
+  },
+  {
+    "team": "SEA",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.99,
+        "rank": 14
+      },
+      "playoff_weeks": {
+        "value": 16.5,
+        "rank": 26
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.38,
+        "rank": 8
+      },
+      "playoff_weeks": {
+        "value": 22.35,
+        "rank": 12
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 31.12,
+        "rank": 12
+      },
+      "playoff_weeks": {
+        "value": 28.26,
+        "rank": 28
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.2,
+        "rank": 16
+      },
+      "playoff_weeks": {
+        "value": 11.73,
+        "rank": 27
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.54,
+        "rank": 15
+      },
+      "playoff_weeks": {
+        "value": 8.29,
+        "rank": 19
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 27,
+        "avg_opponent_points_scored": {
+          "value": 23.6,
+          "rank": 24
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.1,
+          "rank": 30
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.32,
+          "rank": 22
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 28,
+        "avg_opponent_points_scored": {
+          "value": 23.69,
+          "rank": 20
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.02,
+          "rank": 26
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 1.82,
+          "rank": 30
+        }
+      }
+    }
+  },
+  {
+    "team": "SF",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.65,
+        "rank": 22
+      },
+      "playoff_weeks": {
+        "value": 15.83,
+        "rank": 30
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.89,
+        "rank": 18
+      },
+      "playoff_weeks": {
+        "value": 20.16,
+        "rank": 31
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 30.19,
+        "rank": 23
+      },
+      "playoff_weeks": {
+        "value": 27.08,
+        "rank": 32
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 12.92,
+        "rank": 28
+      },
+      "playoff_weeks": {
+        "value": 9.93,
+        "rank": 32
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.83,
+        "rank": 4
+      },
+      "playoff_weeks": {
+        "value": 8.39,
+        "rank": 16
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 11,
+        "avg_opponent_points_scored": {
+          "value": 23.24,
+          "rank": 18
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.2,
+          "rank": 2
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.38,
+          "rank": 14
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 17,
+        "avg_opponent_points_scored": {
+          "value": 21.75,
+          "rank": 10
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 0.98,
+          "rank": 29
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.78,
+          "rank": 5
+        }
+      }
+    }
+  },
+  {
+    "team": "TB",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 17.76,
+        "rank": 20
+      },
+      "playoff_weeks": {
+        "value": 17.24,
+        "rank": 22
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 21.8,
+        "rank": 21
+      },
+      "playoff_weeks": {
+        "value": 20.8,
+        "rank": 27
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 30.8,
+        "rank": 15
+      },
+      "playoff_weeks": {
+        "value": 31.04,
+        "rank": 13
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 12.86,
+        "rank": 30
+      },
+      "playoff_weeks": {
+        "value": 11.93,
+        "rank": 24
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.9,
+        "rank": 1
+      },
+      "playoff_weeks": {
+        "value": 9.22,
+        "rank": 10
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 12,
+        "avg_opponent_points_scored": {
+          "value": 22.38,
+          "rank": 6
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.19,
+          "rank": 5
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.25,
+          "rank": 24
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 23,
+        "avg_opponent_points_scored": {
+          "value": 23.08,
+          "rank": 15
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.12,
+          "rank": 22
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 1.92,
+          "rank": 26
+        }
+      }
+    }
+  },
+  {
+    "team": "TEN",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.77,
+        "rank": 3
+      },
+      "playoff_weeks": {
+        "value": 19.1,
+        "rank": 9
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.25,
+        "rank": 9
+      },
+      "playoff_weeks": {
+        "value": 20.78,
+        "rank": 28
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 31.99,
+        "rank": 4
+      },
+      "playoff_weeks": {
+        "value": 34.96,
+        "rank": 2
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.65,
+        "rank": 7
+      },
+      "playoff_weeks": {
+        "value": 13.97,
+        "rank": 12
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.47,
+        "rank": 18
+      },
+      "playoff_weeks": {
+        "value": 9.69,
+        "rank": 4
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 23,
+        "avg_opponent_points_scored": {
+          "value": 23.57,
+          "rank": 23
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.14,
+          "rank": 23
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.35,
+          "rank": 18
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 11,
+        "avg_opponent_points_scored": {
+          "value": 21.65,
+          "rank": 9
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.17,
+          "rank": 17
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.43,
+          "rank": 15
+        }
+      }
+    }
+  },
+  {
+    "team": "WAS",
+    "season": 2026,
+    "passing_sos": {
+      "full_season": {
+        "value": 18.52,
+        "rank": 7
+      },
+      "playoff_weeks": {
+        "value": 16.47,
+        "rank": 27
+      }
+    },
+    "rushing_sos": {
+      "full_season": {
+        "value": 22.6,
+        "rank": 4
+      },
+      "playoff_weeks": {
+        "value": 19.8,
+        "rank": 32
+      }
+    },
+    "receiving_wr_sos": {
+      "full_season": {
+        "value": 31.23,
+        "rank": 10
+      },
+      "playoff_weeks": {
+        "value": 29.53,
+        "rank": 23
+      }
+    },
+    "receiving_te_sos": {
+      "full_season": {
+        "value": 13.05,
+        "rank": 23
+      },
+      "playoff_weeks": {
+        "value": 11.87,
+        "rank": 25
+      }
+    },
+    "kicking_sos": {
+      "full_season": {
+        "value": 8.58,
+        "rank": 11
+      },
+      "playoff_weeks": {
+        "value": 8.31,
+        "rank": 18
+      }
+    },
+    "dst_sos": {
+      "full_season": {
+        "composite_rank": 26,
+        "avg_opponent_points_scored": {
+          "value": 24.2,
+          "rank": 32
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.17,
+          "rank": 15
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.22,
+          "rank": 28
+        }
+      },
+      "playoff_weeks": {
+        "composite_rank": 7,
+        "avg_opponent_points_scored": {
+          "value": 22.96,
+          "rank": 14
+        },
+        "avg_opponent_giveaways_per_game": {
+          "value": 1.3,
+          "rank": 5
+        },
+        "avg_opponent_sacks_allowed_per_game": {
+          "value": 2.49,
+          "rank": 13
+        }
+      }
+    }
+  }
+]
