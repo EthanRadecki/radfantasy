@@ -117,6 +117,17 @@
 
   .match-note { font-size: 12px; color: var(--ink-soft); margin: 8px 0 16px 0; max-width: 640px; }
 
+  .schedule-row { display: flex; align-items: center; padding: 6px 0; max-width: 500px; border-bottom: 1px solid var(--gray); }
+  .schedule-row .sched-week { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; width: 56px; flex-shrink: 0; color: var(--ink-soft); }
+  .schedule-row .sched-badge {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px;
+    width: 42px; height: 24px; border-radius: 5px; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0; margin-right: 10px;
+  }
+  .schedule-row .sched-opp { font-size: 13px; flex-grow: 1; }
+  .schedule-row .sched-loc { font-size: 11px; color: var(--ink-soft); }
+  .schedule-row.bye .sched-opp { color: var(--ink-soft); font-style: italic; }
+
   .chart-box { max-width: 760px; height: 440px; margin-bottom: 8px; }
 
   .methodology {
@@ -170,6 +181,22 @@
         </div>
         <div class="rank-card" id="sosCard"></div>
         <div class="table-wrap" id="sosTable"></div>
+
+        <div class="route-divider" aria-hidden="true">
+          <svg viewBox="0 0 1040 14" preserveAspectRatio="none">
+            <line x1="0" y1="7" x2="1040" y2="7" stroke="#1C2B36" stroke-width="1" stroke-dasharray="3,4" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="section-label">Team schedule — 2026</div>
+        <div class="filter-row">
+          <label>Team</label>
+          <select id="scheduleTeamSelect"></select>
+        </div>
+        <div class="toggle-row" id="scheduleWindowToggle">
+          <button data-window="full_season" class="active">Full season (weeks 1-17)</button>
+          <button data-window="playoff_weeks">Playoff weeks (15-17)</button>
+        </div>
+        <div id="scheduleDisplay"></div>
       </div>
 
       <div id="view-ol" class="view">

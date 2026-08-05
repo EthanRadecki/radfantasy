@@ -20,6 +20,54 @@ const TEAM_NAMES = {
 };
 function teamName(code) { return TEAM_NAMES[code] || code; }
 
+// Real team brand colors (factual data, not copyrighted) -- used for badge
+// styling. Logos themselves are copyrighted trademarks and are NOT
+// included; if you add your own logo image files to the repo (e.g.
+// assets/logos/DEN.png), the badge renderer below can be extended to show
+// them instead.
+const TEAM_COLORS = {
+  ARI: "#97233F", ATL: "#A71930", BAL: "#241773", BUF: "#00338D", CAR: "#0085CA",
+  CHI: "#0B162A", CIN: "#FB4F14", CLE: "#FF3C00", DAL: "#041E42", DEN: "#FB4F14",
+  DET: "#0076B6", GB: "#203731", HOU: "#03202F", IND: "#002C5F",
+  JAC: "#101820", JAX: "#101820", KC: "#E31837", LV: "#000000", OAK: "#000000",
+  LAC: "#0080C6", SD: "#0080C6", LA: "#003594", LAR: "#003594", STL: "#003594",
+  MIA: "#008E97", MIN: "#4F2683", NE: "#002244", NO: "#D3BC8D", NYG: "#0B2265",
+  NYJ: "#125740", PHI: "#004C54", PIT: "#FFB612", SEA: "#002244", SF: "#AA0000",
+  TB: "#D50A0A", TEN: "#0C2340", WAS: "#5A1414",
+};
+function teamColor(code) { return TEAM_COLORS[code] || "#5A6068"; }
+function contrastText(hex) {
+  const [r, g, b] = hexToRgb(hex);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.55 ? "#1C2B36" : "#F7F7F6";
+}
+
+// ---- gradient utility (red/green heatmap, reusing the existing brand's
+// win-green #4A8A5A and loss-red #C04A4A rather than introducing new hues) ----
+function hexToRgb(hex) {
+  const n = parseInt(hex.replace("#", ""), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+function rgbToHex(rgb) {
+  return "#" + rgb.map(x => Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2, "0")).join("");
+}
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+const GRADIENT_BAD = hexToRgb("#C04A4A");
+const GRADIENT_MID = [239, 239, 238];
+const GRADIENT_GOOD = hexToRgb("#4A8A5A");
+
+function gradientColor(value, min, max, invert = false) {
+  if (min === max || value === null || value === undefined || Number.isNaN(value)) return "transparent";
+  let t = (value - min) / (max - min);
+  t = Math.max(0, Math.min(1, t));
+  if (invert) t = 1 - t;
+  const rgb = t < 0.5
+    ? GRADIENT_BAD.map((c, i) => lerp(c, GRADIENT_MID[i], t / 0.5))
+    : GRADIENT_MID.map((c, i) => lerp(c, GRADIENT_GOOD[i], (t - 0.5) / 0.5));
+  return rgbToHex(rgb);
+}
+
 // ---- data cache + fetch helper ----
 const cache = {};
 async function fetchJSON(path) {
@@ -94,7 +142,7 @@ function renderRankCard(container, { title, subtitle, bestRows, hardRows, footno
   const rowHtml = (r, variant) => `
     <div class="rank-row">
       <div class="rank-num ${variant}">${r.rank}</div>
-      <div class="rank-badge ${variant}">${r.team}</div>
+      <div class="rank-badge" style="background:${teamColor(r.team)};color:${contrastText(teamColor(r.team))}">${r.team}</div>
       <div class="rank-name">${teamName(r.team)}</div>
       <div class="rank-metric">${r.metric}</div>
     </div>`;
@@ -113,7 +161,19 @@ function renderSortableTable(container, { columns, rows, defaultSortKey, default
   let sortKey = defaultSortKey;
   let sortDir = defaultSortDir;
 
+  // Precompute min/max for every gradient-enabled column, over the current rows.
+  function computeRanges() {
+    const ranges = {};
+    columns.forEach(c => {
+      if (!c.gradient) return;
+      const values = rows.map(r => r[c.key]).filter(v => typeof v === "number" && !Number.isNaN(v));
+      if (values.length) ranges[c.key] = { min: Math.min(...values), max: Math.max(...values) };
+    });
+    return ranges;
+  }
+
   function draw() {
+    const ranges = computeRanges();
     const isNumeric = rows.length > 0 && typeof rows[0][sortKey] === "number";
     const sorted = isNumeric
       ? [...rows].sort((a, b) => (a[sortKey] - b[sortKey]) * sortDir)
@@ -128,7 +188,12 @@ function renderSortableTable(container, { columns, rows, defaultSortKey, default
       html += "<tr>";
       columns.forEach(c => {
         const val = c.render ? c.render(row) : row[c.key];
-        html += `<td class="${c.numeric ? 'num' : ''}">${val}</td>`;
+        let style = "";
+        if (c.gradient && ranges[c.key]) {
+          const bg = gradientColor(row[c.key], ranges[c.key].min, ranges[c.key].max, c.invert);
+          style = `style="background:${bg}"`;
+        }
+        html += `<td class="${c.numeric ? 'num' : ''}" ${style}>${val}</td>`;
       });
       html += "</tr>";
     });
@@ -188,6 +253,70 @@ async function initSOS() {
   document.getElementById("sosCard").innerHTML = `<div class="loading">Loading...</div>`;
   sosData = await fetchJSON("data/context/strength_of_schedule_2026.json");
   renderSOS();
+
+  initScheduleView();
+}
+
+// ---- team schedule sub-section within SOS ----
+let scheduleData = null;
+let scheduleCurrentWindow = "full_season";
+
+async function initScheduleView() {
+  const teamSelect = document.getElementById("scheduleTeamSelect");
+  const teams = Object.keys(TEAM_NAMES).filter(c => !["JAC","OAK","SD","STL","LAR"].includes(c)); // canonical codes only, avoid duplicate aliases
+  teamSelect.innerHTML = teams.sort((a,b) => teamName(a).localeCompare(teamName(b)))
+    .map(c => `<option value="${c}">${teamName(c)}</option>`).join("");
+  teamSelect.addEventListener("change", renderSchedule);
+
+  document.getElementById("scheduleWindowToggle").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-window]");
+    if (!btn) return;
+    document.querySelectorAll("#scheduleWindowToggle button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    scheduleCurrentWindow = btn.dataset.window;
+    renderSchedule();
+  });
+
+  document.getElementById("scheduleDisplay").innerHTML = `<div class="loading">Loading schedule...</div>`;
+  try {
+    scheduleData = await fetchJSON("data/context/schedule_2026.json");
+    renderSchedule();
+  } catch (err) {
+    document.getElementById("scheduleDisplay").innerHTML =
+      `<div class="loading">2026 schedule data not available yet (data/context/schedule_2026.json). ` +
+      `Run generate_schedule_2026.py and add the output to your repo to enable this view.</div>`;
+  }
+}
+
+function renderSchedule() {
+  if (!scheduleData) return;
+  const team = document.getElementById("scheduleTeamSelect").value;
+  const teamSchedule = scheduleData.find(t => t.team === team);
+  if (!teamSchedule) {
+    document.getElementById("scheduleDisplay").innerHTML = `<div class="loading">No schedule found for ${teamName(team)}.</div>`;
+    return;
+  }
+
+  const weeks = scheduleCurrentWindow === "full_season"
+    ? teamSchedule.weeks
+    : teamSchedule.weeks.filter(w => w.week >= 15 && w.week <= 17);
+
+  const rowHtml = (w) => {
+    if (w.is_bye) {
+      return `<div class="schedule-row bye">
+        <div class="sched-week">Wk ${w.week}</div>
+        <div class="sched-opp">Bye</div>
+      </div>`;
+    }
+    return `<div class="schedule-row">
+      <div class="sched-week">Wk ${w.week}</div>
+      <div class="sched-badge" style="background:${teamColor(w.opponent)};color:${contrastText(teamColor(w.opponent))}">${w.opponent}</div>
+      <div class="sched-opp">${teamName(w.opponent)}</div>
+      <div class="sched-loc">${w.is_home ? "Home" : "Away"}</div>
+    </div>`;
+  };
+
+  document.getElementById("scheduleDisplay").innerHTML = weeks.map(rowHtml).join("");
 }
 
 function renderSOS() {
@@ -215,7 +344,7 @@ function renderSOS() {
 
   renderRankCard(document.getElementById("sosCard"), {
     title: `${posInfo.label} SOS`,
-    subtitle: sosCurrentWindow === "full_season" ? "Full season" : "Fantasy playoff weeks (15-17)",
+    subtitle: `2026 Projected — ${sosCurrentWindow === "full_season" ? "Full season" : "Fantasy playoff weeks (15-17)"}`,
     bestRows: best.map(r => ({ rank: r.rank, team: r.team, metric: metricLabel(r) })),
     hardRows: worst.map(r => ({ rank: r.rank, team: r.team, metric: metricLabel(r) })),
     footnote: isDst
@@ -225,16 +354,16 @@ function renderSOS() {
 
   const columns = isDst
     ? [
-        { key: "rank", label: "Rank", numeric: true },
+        { key: "rank", label: "Rank", numeric: true, gradient: true, invert: true },
         { key: "team", label: "Team", render: r => teamName(r.team) },
-        { key: "points", label: "Pts Allowed", numeric: true, render: r => fmt(r.points) },
-        { key: "give", label: "Giveaways/gm", numeric: true, render: r => fmt(r.give, 2) },
-        { key: "sacks", label: "Sacks Allowed/gm", numeric: true, render: r => fmt(r.sacks, 2) },
+        { key: "points", label: "Pts Allowed", numeric: true, gradient: true, invert: true, render: r => fmt(r.points) },
+        { key: "give", label: "Giveaways/gm", numeric: true, gradient: true, render: r => fmt(r.give, 2) },
+        { key: "sacks", label: "Sacks Allowed/gm", numeric: true, gradient: true, render: r => fmt(r.sacks, 2) },
       ]
     : [
-        { key: "rank", label: "Rank", numeric: true },
+        { key: "rank", label: "Rank", numeric: true, gradient: true, invert: true },
         { key: "team", label: "Team", render: r => teamName(r.team) },
-        { key: "value", label: posInfo.unit, numeric: true, render: r => fmt(r.value, 2) },
+        { key: "value", label: posInfo.unit, numeric: true, gradient: true, render: r => fmt(r.value, 2) },
       ];
 
   renderSortableTable(document.getElementById("sosTable"), { columns, rows, defaultSortKey: "rank", defaultSortDir: 1 });
@@ -269,7 +398,13 @@ function renderOL() {
   const data = is2026 ? olData2026 : olData2025;
 
   const rows = is2026
-    ? data.map(r => ({ team: r.team, rank: r.consensus_rank }))
+    ? data.map(r => ({
+        team: r.team, rank: r.consensus_rank,
+        fp_rank: r.sources.fantasypros?.rank ?? null,
+        sf_rank: r.sources.stackedfantasy?.rank ?? null,
+        pff_rank: r.sources.pff_4for4?.overall?.rank ?? null,
+        ftn_rank: r.sources.ftnfantasy?.rank ?? null,
+      }))
     : data.map(r => ({ team: r.team, rank: r.ol_rank }));
 
   rows.sort((a, b) => a.rank - b.rank);
@@ -278,7 +413,7 @@ function renderOL() {
 
   renderRankCard(document.getElementById("olCard"), {
     title: `Offensive Line — ${olCurrentYear}`,
-    subtitle: is2026 ? "Preseason projection (4-source blend)" : "Actual end-of-season performance (PFF)",
+    subtitle: is2026 ? "2026 Projected — preseason projection (4-source blend)" : "2025 Actual — end-of-season performance (PFF)",
     bestRows: best.map(r => ({ rank: fmt(r.rank, is2026 ? 1 : 0), team: r.team, metric: "" })),
     hardRows: worst.map(r => ({ rank: fmt(r.rank, is2026 ? 1 : 0), team: r.team, metric: "" })),
     footnote: is2026
@@ -286,10 +421,19 @@ function renderOL() {
       : "PFF's actual end-of-season offensive line rankings. Reflects real 2025 performance.",
   });
 
-  const columns = [
-    { key: "rank", label: "Rank", numeric: true, render: r => fmt(r.rank, is2026 ? 1 : 0) },
-    { key: "team", label: "Team", render: r => teamName(r.team) },
-  ];
+  const columns = is2026
+    ? [
+        { key: "rank", label: "Consensus", numeric: true, gradient: true, invert: true, render: r => fmt(r.rank, 1) },
+        { key: "team", label: "Team", render: r => teamName(r.team) },
+        { key: "fp_rank", label: "FantasyPros", numeric: true, gradient: true, invert: true, render: r => r.fp_rank ?? "-" },
+        { key: "sf_rank", label: "StackedFantasy", numeric: true, gradient: true, invert: true, render: r => r.sf_rank ?? "-" },
+        { key: "pff_rank", label: "4for4/PFF", numeric: true, gradient: true, invert: true, render: r => r.pff_rank ?? "-" },
+        { key: "ftn_rank", label: "FTN Fantasy", numeric: true, gradient: true, invert: true, render: r => r.ftn_rank ?? "-" },
+      ]
+    : [
+        { key: "rank", label: "Rank", numeric: true, gradient: true, invert: true },
+        { key: "team", label: "Team", render: r => teamName(r.team) },
+      ];
   renderSortableTable(document.getElementById("olTable"), { columns, rows, defaultSortKey: "rank", defaultSortDir: 1 });
 }
 
@@ -335,15 +479,15 @@ function renderDST() {
   });
 
   const columns = [
-    { key: "rank", label: "Rank", numeric: true },
+    { key: "rank", label: "Rank", numeric: true, gradient: true, invert: true },
     { key: "team", label: "Team", render: r => teamName(r.team) },
-    { key: "fantasy_points", label: "Fantasy Pts", numeric: true, render: r => fmt(r.fantasy_points) },
-    { key: "sacks", label: "Sacks", numeric: true },
-    { key: "interceptions", label: "INT", numeric: true },
-    { key: "fumbles_recovered", label: "FR", numeric: true },
-    { key: "def_tds", label: "Def TD", numeric: true },
-    { key: "points_allowed", label: "Pts Allowed", numeric: true },
-    { key: "yards_allowed", label: "Yds Allowed", numeric: true },
+    { key: "fantasy_points", label: "Fantasy Pts", numeric: true, gradient: true, render: r => fmt(r.fantasy_points) },
+    { key: "sacks", label: "Sacks", numeric: true, gradient: true },
+    { key: "interceptions", label: "INT", numeric: true, gradient: true },
+    { key: "fumbles_recovered", label: "FR", numeric: true, gradient: true },
+    { key: "def_tds", label: "Def TD", numeric: true, gradient: true },
+    { key: "points_allowed", label: "Pts Allowed", numeric: true, gradient: true, invert: true },
+    { key: "yards_allowed", label: "Yds Allowed", numeric: true, gradient: true, invert: true },
   ];
   renderSortableTable(document.getElementById("dstTable"), { columns, rows: ranked, defaultSortKey: "fantasy_points", defaultSortDir: -1 });
 }
@@ -393,14 +537,14 @@ function renderLeaderboard() {
     { key: "team", label: "Team", render: r => teamName(r.team) },
     { key: "position", label: "Pos" },
     { key: "games_played", label: "GP", numeric: true },
-    { key: "passing_yards", label: "Pass Yds", numeric: true },
-    { key: "passing_tds", label: "Pass TD", numeric: true },
-    { key: "rushing_yards", label: "Rush Yds", numeric: true },
-    { key: "rushing_tds", label: "Rush TD", numeric: true },
-    { key: "receptions", label: "Rec", numeric: true },
-    { key: "receiving_yards", label: "Rec Yds", numeric: true },
-    { key: "receiving_tds", label: "Rec TD", numeric: true },
-    { key: "fantasy_points", label: "Fantasy Pts", numeric: true, render: r => fmt(r.fantasy_points) },
+    { key: "passing_yards", label: "Pass Yds", numeric: true, gradient: true },
+    { key: "passing_tds", label: "Pass TD", numeric: true, gradient: true },
+    { key: "rushing_yards", label: "Rush Yds", numeric: true, gradient: true },
+    { key: "rushing_tds", label: "Rush TD", numeric: true, gradient: true },
+    { key: "receptions", label: "Rec", numeric: true, gradient: true },
+    { key: "receiving_yards", label: "Rec Yds", numeric: true, gradient: true },
+    { key: "receiving_tds", label: "Rec TD", numeric: true, gradient: true },
+    { key: "fantasy_points", label: "Fantasy Pts", numeric: true, gradient: true, render: r => fmt(r.fantasy_points) },
   ];
   renderSortableTable(document.getElementById("lbTable"), { columns, rows, defaultSortKey: "fantasy_points", defaultSortDir: -1 });
 }
