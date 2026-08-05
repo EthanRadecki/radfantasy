@@ -74,7 +74,19 @@ def main():
     else:
         print(f"OK: {len(kickers_with_kicking)}/{len(kickers)} K rows have kicking stats")
 
-    # --- ground-truth spot check ---
+    # --- "silently always zero" guard -- see validate_season_stats.py's
+    # docstring for the full story: a wrong source column name doesn't
+    # error, it just silently returns 0 for every row.
+    season_2024_qbs = [r for r in records if r["season"] == 2024 and r["position"] == "QB"]
+    if season_2024_qbs:
+        total_int_2024 = sum(r["raw_stats"].get("interceptions", 0) for r in season_2024_qbs)
+        if total_int_2024 == 0:
+            ok = fail("2024 QB interceptions sum to exactly 0 across all weeks -- "
+                      "almost certainly a silent field-extraction bug, not reality") and ok
+        else:
+            print(f"OK: 2024 QB interceptions sum to {total_int_2024} (not suspiciously zero)")
+
+    # --- ground-truth spot checks ---
     candidates = [r for r in records if r["season"] == 2024 and r["week"] == 17
                   and "Barkley" in r["player_name"]]
     if not candidates:
@@ -88,6 +100,17 @@ def main():
         else:
             print(f"OK: spot check -- Barkley Week 17 2024 rushing yards = {rush_yds} "
                   f"(expected ~167)")
+
+    allen_2025 = [r for r in records if r["season"] == 2025 and r["player_name"] == "Josh Allen"]
+    if not allen_2025:
+        ok = fail("spot check: Josh Allen 2025 rows not found") and ok
+    else:
+        total_int = sum(r["raw_stats"].get("interceptions", 0) for r in allen_2025)
+        if total_int != 10:
+            ok = fail(f"spot check: Josh Allen 2025 interceptions (summed across weeks) "
+                      f"expected 10, got {total_int}") and ok
+        else:
+            print("OK: spot check -- Josh Allen 2025 threw exactly 10 interceptions (summed across weeks)")
 
     print()
     print("ALL CHECKS PASSED" if ok else "VALIDATION FAILED")

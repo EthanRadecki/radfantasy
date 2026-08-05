@@ -81,6 +81,22 @@ def main():
     else:
         print(f"OK: {len(kickers_with_kicking)}/{len(kickers)} K rows have kicking stats")
 
+    # --- "silently always zero" guard ---
+    # Catches exactly the bug found in this project: a wrong source column
+    # name (e.g. "interceptions" instead of "passing_interceptions") doesn't
+    # throw an error, it just silently returns 0 for every row via
+    # `row.get(field) or 0`. Any raw_stats field that's supposed to vary but
+    # sums to zero across an entire season, for the position it's relevant
+    # to, is a strong signal of exactly this kind of silent extraction bug.
+    season_2024_qbs = [r for r in records if r["season"] == 2024 and r["position"] == "QB"]
+    if season_2024_qbs:
+        total_int_2024 = sum(r["raw_stats"].get("interceptions", 0) for r in season_2024_qbs)
+        if total_int_2024 == 0:
+            ok = fail("2024 QB interceptions sum to exactly 0 across all QBs -- "
+                      "almost certainly a silent field-extraction bug, not reality") and ok
+        else:
+            print(f"OK: 2024 QB interceptions sum to {total_int_2024} (not suspiciously zero)")
+
     # --- ground-truth spot checks ---
     barkley = next((r for r in records if r["season"] == 2024
                      and "Barkley" in r["player_name"]), None)
@@ -109,6 +125,16 @@ def main():
         else:
             print(f"OK: spot check -- {top_receiver['player_name']} leads 2024 receiving "
                   f"yards with {top_receiver['raw_stats']['receiving_yards']}")
+
+    allen_2025 = next((r for r in records if r["season"] == 2025
+                        and r["player_name"] == "Josh Allen"), None)
+    if allen_2025 is None:
+        ok = fail("spot check: Josh Allen 2025 not found") and ok
+    elif allen_2025["raw_stats"].get("interceptions") != 10:
+        ok = fail(f"spot check: Josh Allen 2025 interceptions expected 10, "
+                  f"got {allen_2025['raw_stats'].get('interceptions')}") and ok
+    else:
+        print("OK: spot check -- Josh Allen 2025 threw exactly 10 interceptions")
 
     print()
     print("ALL CHECKS PASSED" if ok else "VALIDATION FAILED")

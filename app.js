@@ -42,6 +42,21 @@ function contrastText(hex) {
   return luminance > 0.55 ? "#1C2B36" : "#F7F7F6";
 }
 
+// Position accent colors -- distinct hues, deliberately NOT overlapping the
+// red/green gradient scale (so a colored position badge is never confused
+// with a "good/bad" signal). Used for both the leaderboard's position badge
+// and the ADP-vs-points scatter chart, so the two views agree visually.
+const POSITION_COLORS = {
+  QB: "#3D6C94", RB: "#6B4E9C", WR: "#80BEE4", TE: "#C97B3D", K: "#5A6068",
+};
+function teamBadge(code) {
+  return `<span class="cell-badge" style="background:${teamColor(code)};color:${contrastText(teamColor(code))}">${code}</span>`;
+}
+function positionBadge(pos) {
+  const color = POSITION_COLORS[pos] || "#5A6068";
+  return `<span class="cell-badge" style="background:${color};color:${contrastText(color)}">${pos}</span>`;
+}
+
 // ---- gradient utility (red/green heatmap, reusing the existing brand's
 // win-green #4A8A5A and loss-red #C04A4A rather than introducing new hues) ----
 function hexToRgb(hex) {
@@ -174,9 +189,15 @@ function renderSortableTable(container, { columns, rows, defaultSortKey, default
 
   function draw() {
     const ranges = computeRanges();
-    const isNumeric = rows.length > 0 && typeof rows[0][sortKey] === "number";
+    const sortCol = columns.find(c => c.key === sortKey);
+    const isNumeric = sortCol ? !!sortCol.numeric : (rows.length > 0 && typeof rows[0][sortKey] === "number");
     const sorted = isNumeric
-      ? [...rows].sort((a, b) => (a[sortKey] - b[sortKey]) * sortDir)
+      ? [...rows].sort((a, b) => {
+          const av = a[sortKey], bv = b[sortKey];
+          if (av === null || av === undefined) return 1;
+          if (bv === null || bv === undefined) return -1;
+          return (av - bv) * sortDir;
+        })
       : [...rows].sort((a, b) => (String(a[sortKey]) > String(b[sortKey]) ? 1 : -1) * sortDir);
 
     let html = `<table><thead><tr>`;
@@ -497,6 +518,45 @@ function renderDST() {
 // ============================================================
 let playerSeasonData = null;
 
+const LEADERBOARD_COLUMNS = {
+  QB: [
+    { key: "attempts", label: "Pass Att", numeric: true, gradient: true },
+    { key: "passing_yards", label: "Pass Yds", numeric: true, gradient: true },
+    { key: "passing_tds", label: "Pass TD", numeric: true, gradient: true },
+    { key: "interceptions", label: "INT", numeric: true, gradient: true, invert: true },
+    { key: "rushing_yards", label: "Rush Yds", numeric: true, gradient: true },
+    { key: "rushing_tds", label: "Rush TD", numeric: true, gradient: true },
+  ],
+  RB: [
+    { key: "carries", label: "Carries", numeric: true, gradient: true },
+    { key: "rushing_yards", label: "Rush Yds", numeric: true, gradient: true },
+    { key: "rushing_tds", label: "Rush TD", numeric: true, gradient: true },
+    { key: "targets", label: "Tgt", numeric: true, gradient: true },
+    { key: "receptions", label: "Rec", numeric: true, gradient: true },
+    { key: "receiving_yards", label: "Rec Yds", numeric: true, gradient: true },
+    { key: "receiving_tds", label: "Rec TD", numeric: true, gradient: true },
+  ],
+  WR: [
+    { key: "targets", label: "Tgt", numeric: true, gradient: true },
+    { key: "receptions", label: "Rec", numeric: true, gradient: true },
+    { key: "receiving_yards", label: "Rec Yds", numeric: true, gradient: true },
+    { key: "receiving_tds", label: "Rec TD", numeric: true, gradient: true },
+  ],
+  TE: [
+    { key: "targets", label: "Tgt", numeric: true, gradient: true },
+    { key: "receptions", label: "Rec", numeric: true, gradient: true },
+    { key: "receiving_yards", label: "Rec Yds", numeric: true, gradient: true },
+    { key: "receiving_tds", label: "Rec TD", numeric: true, gradient: true },
+  ],
+  K: [
+    { key: "fg_made", label: "FG Made", numeric: true, gradient: true },
+    { key: "fg_attempts", label: "FG Att", numeric: true, gradient: true },
+    { key: "fg_pct", label: "FG %", numeric: true, gradient: true, render: r => r.fg_pct === null ? "-" : `${fmt(r.fg_pct, 0)}%` },
+    { key: "pat_made", label: "PAT Made", numeric: true, gradient: true },
+    { key: "pat_attempts", label: "PAT Att", numeric: true, gradient: true },
+  ],
+};
+
 async function initLeaderboard() {
   document.getElementById("lbTable").innerHTML = `<div class="loading">Loading...</div>`;
   playerSeasonData = await fetchJSON("data/stats/player_season_stats.json");
@@ -513,37 +573,53 @@ async function initLeaderboard() {
   renderLeaderboard();
 }
 
+function extractRowForPosition(r, position, scoring) {
+  const base = {
+    player_name: r.player_name, team: r.team, position: r.position,
+    games_played: r.games_played, fantasy_points: r.fantasy_points[scoring],
+    headshot_url: r.headshot_url || null,
+  };
+  if (position === "K") {
+    const k = r.raw_stats.kicking;
+    return {
+      ...base,
+      fg_made: k ? k.fg_made : null, fg_attempts: k ? k.fg_attempts : null,
+      fg_pct: (k && k.fg_attempts) ? (100 * k.fg_made / k.fg_attempts) : null,
+      pat_made: k ? k.pat_made : null, pat_attempts: k ? k.pat_attempts : null,
+    };
+  }
+  return {
+    ...base,
+    attempts: r.raw_stats.attempts, passing_yards: r.raw_stats.passing_yards,
+    passing_tds: r.raw_stats.passing_tds, interceptions: r.raw_stats.interceptions,
+    carries: r.raw_stats.carries, rushing_yards: r.raw_stats.rushing_yards,
+    rushing_tds: r.raw_stats.rushing_tds, targets: r.raw_stats.targets,
+    receptions: r.raw_stats.receptions, receiving_yards: r.raw_stats.receiving_yards,
+    receiving_tds: r.raw_stats.receiving_tds,
+  };
+}
+
 function renderLeaderboard() {
   const season = Number(document.getElementById("lbSeasonSelect").value);
   const position = document.getElementById("lbPositionSelect").value;
   const scoring = document.getElementById("lbScoringSelect").value;
   const search = document.getElementById("lbSearch").value.trim().toLowerCase();
 
-  let rows = playerSeasonData.filter(r => r.season === season);
-  if (position !== "ALL") rows = rows.filter(r => r.position === position);
+  let rows = playerSeasonData.filter(r => r.season === season && r.position === position);
   if (search) rows = rows.filter(r => r.player_name.toLowerCase().includes(search));
 
-  rows = rows.map(r => ({
-    player_name: r.player_name, team: r.team, position: r.position,
-    games_played: r.games_played, passing_yards: r.raw_stats.passing_yards,
-    passing_tds: r.raw_stats.passing_tds, rushing_yards: r.raw_stats.rushing_yards,
-    rushing_tds: r.raw_stats.rushing_tds, receptions: r.raw_stats.receptions,
-    receiving_yards: r.raw_stats.receiving_yards, receiving_tds: r.raw_stats.receiving_tds,
-    fantasy_points: r.fantasy_points[scoring],
-  }));
+  rows = rows.map(r => extractRowForPosition(r, position, scoring));
 
   const columns = [
-    { key: "player_name", label: "Player" },
-    { key: "team", label: "Team", render: r => teamName(r.team) },
-    { key: "position", label: "Pos" },
+    { key: "player_name", label: "Player", render: r => `
+        <div class="player-cell">
+          ${r.headshot_url ? `<img class="player-headshot" src="${r.headshot_url}" loading="lazy" onerror="this.style.display='none'">` : ""}
+          <span>${r.player_name}</span>
+        </div>` },
+    { key: "team", label: "Team", render: r => teamBadge(r.team) },
+    { key: "position", label: "Pos", render: r => positionBadge(r.position) },
     { key: "games_played", label: "GP", numeric: true },
-    { key: "passing_yards", label: "Pass Yds", numeric: true, gradient: true },
-    { key: "passing_tds", label: "Pass TD", numeric: true, gradient: true },
-    { key: "rushing_yards", label: "Rush Yds", numeric: true, gradient: true },
-    { key: "rushing_tds", label: "Rush TD", numeric: true, gradient: true },
-    { key: "receptions", label: "Rec", numeric: true, gradient: true },
-    { key: "receiving_yards", label: "Rec Yds", numeric: true, gradient: true },
-    { key: "receiving_tds", label: "Rec TD", numeric: true, gradient: true },
+    ...LEADERBOARD_COLUMNS[position],
     { key: "fantasy_points", label: "Fantasy Pts", numeric: true, gradient: true, render: r => fmt(r.fantasy_points) },
   ];
   renderSortableTable(document.getElementById("lbTable"), { columns, rows, defaultSortKey: "fantasy_points", defaultSortDir: -1 });
@@ -553,7 +629,6 @@ function renderLeaderboard() {
 // ADP VS POINTS SCATTER VIEW
 // ============================================================
 let adpData = null, scatterChartInstance = null;
-const POSITION_COLORS = { QB: "#3D6C94", RB: "#80BEE4", WR: "#1C2B36", TE: "#5A6068" };
 
 async function initScatter() {
   const results = await Promise.all([

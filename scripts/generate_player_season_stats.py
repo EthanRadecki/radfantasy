@@ -48,17 +48,30 @@ SEASONS = list(range(1999, 2026))
 
 ALLOWED_POSITIONS = {"QB", "RB", "WR", "TE", "K"}
 
-RAW_STAT_FIELDS = [
-    "attempts", "passing_yards", "passing_tds", "interceptions", "passing_2pt_conversions",
-    "carries", "rushing_yards", "rushing_tds", "rushing_fumbles_lost", "rushing_2pt_conversions",
-    "targets", "receptions", "receiving_yards", "receiving_tds",
-    "receiving_fumbles_lost", "receiving_2pt_conversions",
-    "special_teams_tds",
-]
+# Maps our internal field name -> nflverse's actual column name, only where
+# they differ. CONFIRMED via a direct diagnostic against real data: nflverse
+# has no column literally named "interceptions" -- that name silently
+# returned nothing via row.get(field), which "or 0" then masked as a
+# legitimate zero. The real column is "passing_interceptions" (nflverse also
+# has a separate "def_interceptions" for defensive picks, which is why a
+# single generic "interceptions" was never going to be right). This means
+# EVERY QB's interceptions were undercounted as 0 and every fantasy_points
+# total was missing the -2/INT penalty until this fix. "interceptions" is
+# kept as our own output key throughout this project (scoring.py, the site's
+# JS) to avoid a wider rename -- only the source lookup changes here.
+FIELD_SOURCE_MAP = {
+    "attempts": "attempts", "passing_yards": "passing_yards", "passing_tds": "passing_tds",
+    "interceptions": "passing_interceptions", "passing_2pt_conversions": "passing_2pt_conversions",
+    "carries": "carries", "rushing_yards": "rushing_yards", "rushing_tds": "rushing_tds",
+    "rushing_fumbles_lost": "rushing_fumbles_lost", "rushing_2pt_conversions": "rushing_2pt_conversions",
+    "targets": "targets", "receptions": "receptions", "receiving_yards": "receiving_yards",
+    "receiving_tds": "receiving_tds", "receiving_fumbles_lost": "receiving_fumbles_lost",
+    "receiving_2pt_conversions": "receiving_2pt_conversions", "special_teams_tds": "special_teams_tds",
+}
 
 
 def extract_raw_stats(row: dict) -> dict:
-    return {field: row.get(field) or 0 for field in RAW_STAT_FIELDS}
+    return {our_key: row.get(source_col) or 0 for our_key, source_col in FIELD_SOURCE_MAP.items()}
 
 
 def main():
@@ -103,6 +116,7 @@ def main():
             "team": row.get("team") or row.get("recent_team"),
             "season": row["season"],
             "games_played": row.get("games") or row.get("games_played"),
+            "headshot_url": row.get("headshot_url"),
             "raw_stats": raw_stats,
             "fantasy_points": calculate_fantasy_points(raw_stats, kicking_stats),
         })
@@ -116,7 +130,7 @@ def main():
     for (player_id, season), kicking_stats in kicking_by_player_season.items():
         if (player_id, season) in seen_keys:
             continue
-        raw_stats = {field: 0 for field in RAW_STAT_FIELDS}
+        raw_stats = {field: 0 for field in FIELD_SOURCE_MAP}
         raw_stats["kicking"] = {
             "fg_made": kicking_stats["fg_made"],
             "fg_attempts": kicking_stats["fg_attempts"],
@@ -131,6 +145,7 @@ def main():
             "team": None,  # not available from pbp kicking aggregation alone
             "season": season,
             "games_played": None,
+            "headshot_url": None,  # not available from pbp kicking aggregation alone
             "raw_stats": raw_stats,
             "fantasy_points": calculate_fantasy_points(raw_stats, kicking_stats),
         })
