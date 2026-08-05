@@ -577,6 +577,7 @@ function extractRowForPosition(r, position, scoring) {
   const base = {
     player_name: r.player_name, team: r.team, position: r.position,
     games_played: r.games_played, fantasy_points: r.fantasy_points[scoring],
+    headshot_url: r.headshot_url || null,
   };
   if (position === "K") {
     const k = r.raw_stats.kicking;
@@ -610,7 +611,11 @@ function renderLeaderboard() {
   rows = rows.map(r => extractRowForPosition(r, position, scoring));
 
   const columns = [
-    { key: "player_name", label: "Player" },
+    { key: "player_name", label: "Player", render: r => `
+        <div class="player-cell">
+          ${r.headshot_url ? `<img class="player-headshot" src="${r.headshot_url}" loading="lazy" onerror="this.style.display='none'">` : ""}
+          <span>${r.player_name}</span>
+        </div>` },
     { key: "team", label: "Team", render: r => teamBadge(r.team) },
     { key: "position", label: "Pos", render: r => positionBadge(r.position) },
     { key: "games_played", label: "GP", numeric: true },
