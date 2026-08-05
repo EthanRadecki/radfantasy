@@ -108,6 +108,62 @@ function normalizeName(name) {
     .toLowerCase();
 }
 
+// ---- least-squares linear regression + circular headshot helpers ----
+function linearRegression(points) {
+  const n = points.length;
+  if (n < 2) return null;
+  let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+  points.forEach(p => { sumX += p.x; sumY += p.y; sumXY += p.x * p.y; sumXX += p.x * p.x; });
+  const denom = (n * sumXX - sumX * sumX);
+  if (denom === 0) return null;
+  const slope = (n * sumXY - sumX * sumY) / denom;
+  const intercept = (sumY - slope * sumX) / n;
+  const meanY = sumY / n;
+  let ssTot = 0, ssRes = 0;
+  points.forEach(p => {
+    const pred = slope * p.x + intercept;
+    ssRes += (p.y - pred) ** 2;
+    ssTot += (p.y - meanY) ** 2;
+  });
+  const r2 = ssTot === 0 ? 0 : 1 - (ssRes / ssTot);
+  return { slope, intercept, r2, n };
+}
+
+function loadImage(url) {
+  return new Promise((resolve) => {
+    if (!url) { resolve(null); return; }
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = url;
+  });
+}
+
+// Draws a loaded headshot into a circular canvas (Chart.js pointStyle draws
+// images as-is, so the circular crop -- matching the .player-headshot look
+// used in the leaderboard -- has to happen here rather than via CSS).
+function circularHeadshot(img, size = 32) {
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(size / 2, size / 2, size / 2 - 1, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.clip();
+  ctx.fillStyle = "#D9D9D9";
+  ctx.fillRect(0, 0, size, size);
+  ctx.drawImage(img, 0, 0, size, size);
+  ctx.restore();
+  ctx.strokeStyle = "#F7F7F6";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(size / 2, size / 2, size / 2 - 1, 0, Math.PI * 2);
+  ctx.stroke();
+  return canvas;
+}
+
 // ============================================================
 // TAB SWITCHING
 // ============================================================
@@ -147,7 +203,10 @@ wireSubTabs("trendsSubTabs", (view) => initView(view));
 function initView(view) {
   if (initedViews.has(view)) return;
   initedViews.add(view);
-  ({ sos: initSOS, ol: initOL, dst: initDST, leaderboard: initLeaderboard, scatter: initScatter })[view]();
+  ({
+    sos: initSOS, ol: initOL, dst: initDST, leaderboard: initLeaderboard, scatter: initScatter,
+    olscatter: initOLScatter, olslope: initOLSlope,
+  })[view]();
 }
 
 // ============================================================
@@ -702,6 +761,222 @@ function renderScatter() {
     `Matched ${matched.length} of ${adpRows.length} drafted skill-position players to ${year} season stats ` +
     `(${Math.round(100 * matched.length / adpRows.length)}%). Unmatched names are typically nickname/legal-name ` +
     `differences between FantasyPros and nflverse (e.g. "Kenneth" vs "Kenny").`;
+}
+
+// ============================================================
+// PPG vs O-LINE RANK SCATTER (with regression line + headshots)
+// ============================================================
+// How many top-scorers (by season TOTAL points, not PPG -- so one huge game
+// doesn't buy a bench player a headshot) get a real headshot marker instead
+// of a plain dot. Tuned roughly to season-long fantasy-relevant counts.
+const OL_HEADSHOT_TOP_N = { QB: 24, RB: 36, WR: 48, TE: 24 };
+
+let olScatterSeasonData = null, olRank2025Lookup = null, olScatterChartInstance = null;
+let olScatterPosition = "RB";
+let olScatterMinGames = 4;
+
+async function initOLScatter() {
+  const toggle = document.getElementById("olScatterPositionToggle");
+  toggle.innerHTML = ["QB", "RB", "WR", "TE"].map(p =>
+    `<button data-pos="${p}" class="${p === olScatterPosition ? 'active' : ''}">${p}</button>`
+  ).join("");
+  toggle.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-pos]");
+    if (!btn) return;
+    toggle.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    olScatterPosition = btn.dataset.pos;
+    renderOLScatter();
+  });
+
+  const slider = document.getElementById("olScatterGamesSlider");
+  slider.value = olScatterMinGames;
+  slider.addEventListener("input", () => {
+    olScatterMinGames = Number(slider.value);
+    document.getElementById("olScatterGamesValue").textContent = olScatterMinGames;
+    renderOLScatter();
+  });
+
+  document.getElementById("olScatterStatsNote").textContent = "Loading...";
+  const [seasonData, olRank2025] = await Promise.all([
+    playerSeasonData ? Promise.resolve(playerSeasonData) : fetchJSON("data/stats/player_season_stats.json"),
+    fetchJSON("data/context/offensive_line_rankings_2025.json"),
+  ]);
+  playerSeasonData = seasonData;
+  olScatterSeasonData = seasonData.filter(r => r.season === 2025);
+  olRank2025Lookup = new Map(olRank2025.map(r => [r.team, r.ol_rank]));
+
+  renderOLScatter();
+}
+
+async function renderOLScatter() {
+  if (!olScatterSeasonData) return;
+
+  const eligible = olScatterSeasonData
+    .filter(r => r.position === olScatterPosition && r.games_played >= olScatterMinGames && olRank2025Lookup.has(r.team))
+    .map(r => ({
+      name: r.player_name,
+      team: r.team,
+      olRank: olRank2025Lookup.get(r.team),
+      ppg: r.fantasy_points.ppr / r.games_played,
+      totalPts: r.fantasy_points.ppr,
+      headshot_url: r.headshot_url || null,
+    }));
+
+  const topN = OL_HEADSHOT_TOP_N[olScatterPosition] || 24;
+  const highlightKeys = new Set(
+    [...eligible].sort((a, b) => b.totalPts - a.totalPts).slice(0, topN).map(p => `${p.name}|${p.team}`)
+  );
+
+  const reg = linearRegression(eligible.map(p => ({ x: p.olRank, y: p.ppg })));
+
+  document.getElementById("olScatterStatsNote").textContent = reg
+    ? `${eligible.length} ${olScatterPosition}s with ${olScatterMinGames}+ games played, 2025 season, PPR scoring. ` +
+      `r\u00b2 = ${fmt(reg.r2, 3)}, trend = ${fmt(reg.slope, 3)} PPG per O-line rank spot ` +
+      `(${reg.slope < 0 ? "better O-line rank associates with higher PPG, as expected" : "no clear negative relationship in this cut"}). ` +
+      `Correlation, not causation -- scheme, QB play, and opponent strength aren't controlled for here.`
+    : `Not enough qualifying ${olScatterPosition}s at this games-played threshold to fit a trend line -- try lowering the minimum.`;
+
+  const highlightPlayers = eligible.filter(p => highlightKeys.has(`${p.name}|${p.team}`) && p.headshot_url);
+  const plainPlayers = eligible.filter(p => !highlightKeys.has(`${p.name}|${p.team}`) || !p.headshot_url);
+
+  const rawImages = await Promise.all(highlightPlayers.map(p => loadImage(p.headshot_url)));
+  const highlightData = highlightPlayers.map((p, i) => ({
+    x: p.olRank, y: p.ppg, name: p.name, team: p.team,
+    _img: rawImages[i] ? circularHeadshot(rawImages[i]) : null,
+  }));
+  const plainData = plainPlayers.map(p => ({ x: p.olRank, y: p.ppg, name: p.name, team: p.team }));
+
+  if (olScatterChartInstance) olScatterChartInstance.destroy();
+
+  if (typeof Chart === "undefined") {
+    document.getElementById("olScatterFallbackMsg").style.display = "block";
+    document.getElementById("olScatterFallbackMsg").textContent =
+      "Chart.js failed to load (no network access?). The stats above are unaffected.";
+    return;
+  }
+  document.getElementById("olScatterFallbackMsg").style.display = "none";
+
+  const datasets = [
+    {
+      label: `${olScatterPosition} (other)`,
+      data: plainData,
+      pointStyle: "circle",
+      radius: 3,
+      backgroundColor: plainData.map(d => teamColor(d.team) + "99"),
+      borderColor: "transparent",
+    },
+    {
+      label: `${olScatterPosition} (top scorers)`,
+      data: highlightData,
+      pointStyle: highlightData.map(d => d._img || "circle"),
+      radius: highlightData.map(d => d._img ? 16 : 4),
+      backgroundColor: highlightData.map(d => teamColor(d.team)),
+      borderColor: highlightData.map(d => teamColor(d.team)),
+      borderWidth: 1,
+    },
+  ];
+
+  if (reg) {
+    const xs = eligible.map(p => p.olRank);
+    const minX = Math.min(...xs), maxX = Math.max(...xs);
+    datasets.push({
+      type: "line",
+      label: "Trend",
+      data: [{ x: minX, y: reg.slope * minX + reg.intercept }, { x: maxX, y: reg.slope * maxX + reg.intercept }],
+      borderColor: "#3D6C94",
+      borderWidth: 2,
+      borderDash: [6, 4],
+      pointRadius: 0,
+      fill: false,
+    });
+  }
+
+  const ctx = document.getElementById("olScatterChart").getContext("2d");
+  olScatterChartInstance = new Chart(ctx, {
+    type: "scatter",
+    data: { datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { title: { display: true, text: "2025 O-Line Rank (1 = best)" }, min: 1, max: 32 },
+        y: { title: { display: true, text: "PPG (PPR), 2025" } },
+      },
+      plugins: {
+        legend: { labels: { filter: (item) => item.text !== `${olScatterPosition} (other)` } },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => ctx.raw.name
+              ? `${ctx.raw.name} (${ctx.raw.team}): O-line rank ${ctx.raw.x}, ${fmt(ctx.raw.y)} PPG`
+              : "Trend line",
+          },
+        },
+      },
+    },
+  });
+}
+
+// ============================================================
+// O-LINE RANK CHANGE SLOPE CHART (2025 actual -> 2026 projected)
+// ============================================================
+async function initOLSlope() {
+  document.getElementById("olSlopeChart").innerHTML = `<div class="loading">Loading...</div>`;
+  const [d2025, d2026] = await Promise.all([
+    olData2025 || fetchJSON("data/context/offensive_line_rankings_2025.json"),
+    olData2026 || fetchJSON("data/context/offensive_line_rankings_2026.json"),
+  ]);
+  olData2025 = d2025;
+  olData2026 = d2026;
+  renderOLSlope();
+}
+
+function renderOLSlope() {
+  const rank2026Lookup = new Map(olData2026.map(r => [r.team, r.consensus_rank]));
+
+  const rows = olData2025
+    .map(r => ({ team: r.team, rank2025: r.ol_rank, rank2026: rank2026Lookup.get(r.team) }))
+    .filter(r => r.rank2026 !== undefined && r.rank2026 !== null);
+  rows.forEach(r => { r.delta = r.rank2025 - r.rank2026; }); // positive = projected improvement
+
+  const deltas = rows.map(r => r.delta);
+  const minD = Math.min(...deltas), maxD = Math.max(...deltas);
+
+  const H = 800; // px -- must match the .ol-slope-wrap height set below
+  const yFor = (rank) => (((rank - 1) / 31) * (H - 40) + 20).toFixed(1);
+
+  const linesHtml = rows.map(r => {
+    const color = gradientColor(r.delta, minD, maxD);
+    return `<line class="ol-slope-line" data-team="${r.team}" x1="16" y1="${yFor(r.rank2025)}" x2="84" y2="${yFor(r.rank2026)}" stroke="${color === 'transparent' ? '#80BEE4' : color}" stroke-width="2.5" />`;
+  }).join("");
+
+  const badgeHtml = (r, side, rankLabel) => `
+    <div class="ol-slope-team ${side}" data-team="${r.team}" style="top:${yFor(side === 'left' ? r.rank2025 : r.rank2026)}px">
+      <span class="rank-badge" style="background:${teamColor(r.team)};color:${contrastText(teamColor(r.team))};width:38px;height:22px;font-size:11px;">${r.team}</span>
+      <span class="rank-tag">${rankLabel}</span>
+    </div>`;
+
+  const container = document.getElementById("olSlopeChart");
+  container.innerHTML = `
+    <div class="ol-slope-header"><span>2025 Actual</span><span>2026 Projected</span></div>
+    <div class="ol-slope-wrap" style="height:${H}px;">
+      <svg class="ol-slope-svg" viewBox="0 0 100 ${H}" preserveAspectRatio="none">${linesHtml}</svg>
+      ${rows.map(r => badgeHtml(r, "left", `#${r.rank2025}`)).join("")}
+      ${rows.map(r => badgeHtml(r, "right", `#${fmt(r.rank2026, 1)}`)).join("")}
+    </div>
+  `;
+
+  const wrap = container.querySelector(".ol-slope-wrap");
+  wrap.querySelectorAll(".ol-slope-team").forEach(el => {
+    el.addEventListener("mouseenter", () => {
+      wrap.classList.add("hovering");
+      wrap.querySelectorAll(`[data-team="${el.dataset.team}"]`).forEach(m => m.classList.add("active"));
+    });
+    el.addEventListener("mouseleave", () => {
+      wrap.classList.remove("hovering");
+      wrap.querySelectorAll(".active").forEach(m => m.classList.remove("active"));
+    });
+  });
 }
 
 // Kick off default view
