@@ -863,10 +863,13 @@ async function renderOLScatter() {
     ? `${eligible.length} ${olScatterPosition}s with ${olScatterMinGames}+ games and ${olScatterVolumeMin}+ ${volCfg.label.toLowerCase()}, 2025 season, PPR scoring. ` +
       `r\u00b2 = ${fmt(reg.r2, 3)}, trend = ${fmt(reg.slope, 3)} PPG per O-line rank spot ` +
       `(${reg.slope < 0 ? "better O-line rank associates with higher PPG, as expected" : "no clear negative relationship in this cut"}). ` +
-      `Correlation, not causation -- scheme, QB play, and opponent strength aren't controlled for here.`
+      `Correlation, not causation -- scheme, QB play, and opponent strength aren't controlled for here.` +
+      (topScorersMissingPhoto > 0 ? ` (${topScorersMissingPhoto} of the top scorers are missing a headshot_url and show as a plain dot instead.)` : "")
     : `Not enough qualifying ${olScatterPosition}s at these thresholds to fit a trend line -- try lowering the minimums.`;
 
   const highlightPlayers = eligible.filter(p => highlightKeys.has(`${p.name}|${p.team}`) && p.headshot_url);
+  const topScorersMissingPhoto = [...eligible]
+    .filter(p => highlightKeys.has(`${p.name}|${p.team}`) && !p.headshot_url).length;
   const plainPlayers = eligible.filter(p => !highlightKeys.has(`${p.name}|${p.team}`) || !p.headshot_url);
 
   const rawImages = await Promise.all(highlightPlayers.map(p => loadImage(p.headshot_url)));
@@ -899,7 +902,7 @@ async function renderOLScatter() {
       label: `${olScatterPosition} (top scorers)`,
       data: highlightData,
       pointStyle: highlightData.map(d => d._img || "circle"),
-      radius: highlightData.map(d => d._img ? 0 : 4),
+      radius: highlightData.map(d => d._img ? 20 : 4),
       backgroundColor: highlightData.map(d => teamColor(d.team)),
       borderColor: "transparent",
       borderWidth: 0,
