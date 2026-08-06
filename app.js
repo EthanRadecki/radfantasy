@@ -139,29 +139,20 @@ function loadImage(url) {
   });
 }
 
-// Draws a loaded headshot into a circular canvas (Chart.js pointStyle draws
-// images as-is, so the circular crop -- matching the .player-headshot look
-// used in the leaderboard -- has to happen here rather than via CSS).
-function circularHeadshot(img, size = 32) {
-  const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext("2d");
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(size / 2, size / 2, size / 2 - 1, 0, Math.PI * 2);
-  ctx.closePath();
-  ctx.clip();
-  ctx.fillStyle = "#D9D9D9";
-  ctx.fillRect(0, 0, size, size);
-  ctx.drawImage(img, 0, 0, size, size);
-  ctx.restore();
-  ctx.strokeStyle = "#F7F7F6";
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.arc(size / 2, size / 2, size / 2 - 1, 0, Math.PI * 2);
-  ctx.stroke();
-  return canvas;
+// Chart.js draws pointStyle images at whatever width/height the Image
+// element reports, so this just scales the image down to a sane on-chart
+// size while preserving its native aspect ratio -- no cropping or masking,
+// so the photo floats as-is instead of being squeezed into a circle.
+function sizeImageForPoint(img, maxDim = 42) {
+  const ratio = (img.naturalWidth && img.naturalHeight) ? img.naturalWidth / img.naturalHeight : 1;
+  if (ratio >= 1) {
+    img.width = maxDim;
+    img.height = Math.round(maxDim / ratio);
+  } else {
+    img.height = maxDim;
+    img.width = Math.round(maxDim * ratio);
+  }
+  return img;
 }
 
 // ============================================================
@@ -771,12 +762,36 @@ function renderScatter() {
 // of a plain dot. Tuned roughly to season-long fantasy-relevant counts.
 const OL_HEADSHOT_TOP_N = { QB: 24, RB: 36, WR: 48, TE: 24 };
 
+// Volume floor per position -- accounts for role/usage so a low-snap backup
+// doesn't sit next to a bell-cow at the same O-line rank and muddy the read.
+const OL_VOLUME_FIELD = {
+  QB: { field: "attempts", label: "Pass attempts/gm", max: 40, default: 15 },
+  RB: { field: "carries", label: "Rush attempts/gm", max: 25, default: 8 },
+  WR: { field: "targets", label: "Targets/gm", max: 12, default: 4 },
+  TE: { field: "targets", label: "Targets/gm", max: 10, default: 3 },
+};
+
+let olScatterVolumeMin = OL_VOLUME_FIELD.RB.default;
+
 let olScatterSeasonData = null, olRank2025Lookup = null, olScatterChartInstance = null;
 let olScatterPosition = "RB";
 let olScatterMinGames = 4;
 
 async function initOLScatter() {
   const toggle = document.getElementById("olScatterPositionToggle");
+  const volumeSlider = document.getElementById("olScatterVolumeSlider");
+  const volumeLabel = document.getElementById("olScatterVolumeLabel");
+  const volumeValue = document.getElementById("olScatterVolumeValue");
+
+  function applyVolumeConfigForPosition() {
+    const cfg = OL_VOLUME_FIELD[olScatterPosition];
+    volumeSlider.max = cfg.max;
+    volumeSlider.value = cfg.default;
+    olScatterVolumeMin = cfg.default;
+    volumeLabel.textContent = `Min ${cfg.label.toLowerCase()}`;
+    volumeValue.textContent = cfg.default;
+  }
+
   toggle.innerHTML = ["QB", "RB", "WR", "TE"].map(p =>
     `<button data-pos="${p}" class="${p === olScatterPosition ? 'active' : ''}">${p}</button>`
   ).join("");
@@ -786,14 +801,22 @@ async function initOLScatter() {
     toggle.querySelectorAll("button").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     olScatterPosition = btn.dataset.pos;
+    applyVolumeConfigForPosition();
+    renderOLScatter();
+  });
+  applyVolumeConfigForPosition();
+
+  const gamesSlider = document.getElementById("olScatterGamesSlider");
+  gamesSlider.value = olScatterMinGames;
+  gamesSlider.addEventListener("input", () => {
+    olScatterMinGames = Number(gamesSlider.value);
+    document.getElementById("olScatterGamesValue").textContent = olScatterMinGames;
     renderOLScatter();
   });
 
-  const slider = document.getElementById("olScatterGamesSlider");
-  slider.value = olScatterMinGames;
-  slider.addEventListener("input", () => {
-    olScatterMinGames = Number(slider.value);
-    document.getElementById("olScatterGamesValue").textContent = olScatterMinGames;
+  volumeSlider.addEventListener("input", () => {
+    olScatterVolumeMin = Number(volumeSlider.value);
+    volumeValue.textContent = olScatterVolumeMin;
     renderOLScatter();
   });
 
@@ -811,17 +834,23 @@ async function initOLScatter() {
 
 async function renderOLScatter() {
   if (!olScatterSeasonData) return;
+  const volCfg = OL_VOLUME_FIELD[olScatterPosition];
 
   const eligible = olScatterSeasonData
     .filter(r => r.position === olScatterPosition && r.games_played >= olScatterMinGames && olRank2025Lookup.has(r.team))
-    .map(r => ({
-      name: r.player_name,
-      team: r.team,
-      olRank: olRank2025Lookup.get(r.team),
-      ppg: r.fantasy_points.ppr / r.games_played,
-      totalPts: r.fantasy_points.ppr,
-      headshot_url: r.headshot_url || null,
-    }));
+    .map(r => {
+      const rawVol = r.raw_stats ? r.raw_stats[volCfg.field] : null;
+      return {
+        name: r.player_name,
+        team: r.team,
+        olRank: olRank2025Lookup.get(r.team),
+        ppg: r.fantasy_points.ppr / r.games_played,
+        totalPts: r.fantasy_points.ppr,
+        volumePerGame: (rawVol !== null && rawVol !== undefined) ? rawVol / r.games_played : null,
+        headshot_url: r.headshot_url || null,
+      };
+    })
+    .filter(p => p.volumePerGame !== null && p.volumePerGame >= olScatterVolumeMin);
 
   const topN = OL_HEADSHOT_TOP_N[olScatterPosition] || 24;
   const highlightKeys = new Set(
@@ -831,11 +860,11 @@ async function renderOLScatter() {
   const reg = linearRegression(eligible.map(p => ({ x: p.olRank, y: p.ppg })));
 
   document.getElementById("olScatterStatsNote").textContent = reg
-    ? `${eligible.length} ${olScatterPosition}s with ${olScatterMinGames}+ games played, 2025 season, PPR scoring. ` +
+    ? `${eligible.length} ${olScatterPosition}s with ${olScatterMinGames}+ games and ${olScatterVolumeMin}+ ${volCfg.label.toLowerCase()}, 2025 season, PPR scoring. ` +
       `r\u00b2 = ${fmt(reg.r2, 3)}, trend = ${fmt(reg.slope, 3)} PPG per O-line rank spot ` +
       `(${reg.slope < 0 ? "better O-line rank associates with higher PPG, as expected" : "no clear negative relationship in this cut"}). ` +
       `Correlation, not causation -- scheme, QB play, and opponent strength aren't controlled for here.`
-    : `Not enough qualifying ${olScatterPosition}s at this games-played threshold to fit a trend line -- try lowering the minimum.`;
+    : `Not enough qualifying ${olScatterPosition}s at these thresholds to fit a trend line -- try lowering the minimums.`;
 
   const highlightPlayers = eligible.filter(p => highlightKeys.has(`${p.name}|${p.team}`) && p.headshot_url);
   const plainPlayers = eligible.filter(p => !highlightKeys.has(`${p.name}|${p.team}`) || !p.headshot_url);
@@ -843,7 +872,7 @@ async function renderOLScatter() {
   const rawImages = await Promise.all(highlightPlayers.map(p => loadImage(p.headshot_url)));
   const highlightData = highlightPlayers.map((p, i) => ({
     x: p.olRank, y: p.ppg, name: p.name, team: p.team,
-    _img: rawImages[i] ? circularHeadshot(rawImages[i]) : null,
+    _img: rawImages[i] ? sizeImageForPoint(rawImages[i]) : null,
   }));
   const plainData = plainPlayers.map(p => ({ x: p.olRank, y: p.ppg, name: p.name, team: p.team }));
 
@@ -870,10 +899,10 @@ async function renderOLScatter() {
       label: `${olScatterPosition} (top scorers)`,
       data: highlightData,
       pointStyle: highlightData.map(d => d._img || "circle"),
-      radius: highlightData.map(d => d._img ? 16 : 4),
+      radius: highlightData.map(d => d._img ? 0 : 4),
       backgroundColor: highlightData.map(d => teamColor(d.team)),
-      borderColor: highlightData.map(d => teamColor(d.team)),
-      borderWidth: 1,
+      borderColor: "transparent",
+      borderWidth: 0,
     },
   ];
 
