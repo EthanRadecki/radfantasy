@@ -129,13 +129,16 @@ function linearRegression(points) {
   return { slope, intercept, r2, n };
 }
 
-function loadImage(url) {
+function loadImage(url, timeoutMs = 4000) {
   return new Promise((resolve) => {
     if (!url) { resolve(null); return; }
+    let done = false;
+    const finish = (result) => { if (!done) { done = true; resolve(result); } };
     const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = () => resolve(null);
+    img.onload = () => finish(img);
+    img.onerror = () => finish(null);
     img.src = url;
+    setTimeout(() => finish(null), timeoutMs);
   });
 }
 
@@ -859,6 +862,11 @@ async function renderOLScatter() {
 
   const reg = linearRegression(eligible.map(p => ({ x: p.olRank, y: p.ppg })));
 
+  const highlightPlayers = eligible.filter(p => highlightKeys.has(`${p.name}|${p.team}`) && p.headshot_url);
+  const plainPlayers = eligible.filter(p => !highlightKeys.has(`${p.name}|${p.team}`) || !p.headshot_url);
+  const topScorersMissingPhoto = [...eligible]
+    .filter(p => highlightKeys.has(`${p.name}|${p.team}`) && !p.headshot_url).length;
+
   document.getElementById("olScatterStatsNote").textContent = reg
     ? `${eligible.length} ${olScatterPosition}s with ${olScatterMinGames}+ games and ${olScatterVolumeMin}+ ${volCfg.label.toLowerCase()}, 2025 season, PPR scoring. ` +
       `r\u00b2 = ${fmt(reg.r2, 3)}, trend = ${fmt(reg.slope, 3)} PPG per O-line rank spot ` +
@@ -867,10 +875,10 @@ async function renderOLScatter() {
       (topScorersMissingPhoto > 0 ? ` (${topScorersMissingPhoto} of the top scorers are missing a headshot_url and show as a plain dot instead.)` : "")
     : `Not enough qualifying ${olScatterPosition}s at these thresholds to fit a trend line -- try lowering the minimums.`;
 
-  const highlightPlayers = eligible.filter(p => highlightKeys.has(`${p.name}|${p.team}`) && p.headshot_url);
-  const topScorersMissingPhoto = [...eligible]
-    .filter(p => highlightKeys.has(`${p.name}|${p.team}`) && !p.headshot_url).length;
-  const plainPlayers = eligible.filter(p => !highlightKeys.has(`${p.name}|${p.team}`) || !p.headshot_url);
+  document.getElementById("olScatterFallbackMsg").style.display = "none";
+  if (highlightPlayers.length > 0) {
+    document.getElementById("olScatterStatsNote").textContent += " Loading headshots...";
+  }
 
   const rawImages = await Promise.all(highlightPlayers.map(p => loadImage(p.headshot_url)));
   const highlightData = highlightPlayers.map((p, i) => ({
